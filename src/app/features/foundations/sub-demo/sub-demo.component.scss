@@ -1,0 +1,215 @@
+// sub-demo.component.scss
+
+// ── Design tokens (local to this component) ──
+$color-active: #22c55e; // green — subscribed
+$color-inactive: #ef4444; // red — not subscribed
+$color-emit: #3b82f6; // blue — emit action
+$color-surface: #1e1e2e; // dark card background
+$color-text: #e2e8f0; // light text
+$color-muted: #94a3b8; // secondary text
+$color-border: #334155; // subtle borders
+$radius: 8px;
+
+// ── Block ──
+.sub-demo {
+  max-width: 640px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: $color-surface;
+  border-radius: $radius;
+  color: $color-text;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+// ── Header ──
+.sub-demo__header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+
+  h2 {
+    margin: 0 0 0.25rem;
+    font-size: 1.5rem;
+  }
+}
+
+.sub-demo__subtitle {
+  margin: 0;
+  color: $color-muted;
+  font-size: 0.9rem;
+}
+
+// ── Status Indicator ──
+.sub-demo__status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: $radius;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+
+  &--active {
+    background: rgba($color-active, 0.15);
+    color: $color-active;
+
+    .sub-demo__status-dot {
+      background: $color-active;
+      box-shadow: 0 0 8px rgba($color-active, 0.6);
+    }
+  }
+
+  &--inactive {
+    background: rgba($color-inactive, 0.15);
+    color: $color-inactive;
+
+    .sub-demo__status-dot {
+      background: $color-inactive;
+      box-shadow: 0 0 8px rgba($color-inactive, 0.6);
+    }
+  }
+}
+
+.sub-demo__status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+// ── Controls ──
+.sub-demo__controls {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: $radius;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    transform 0.1s ease;
+
+  &:active:not(:disabled) {
+    transform: scale(0.96);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &--subscribe {
+    background: $color-active;
+    color: #fff;
+  }
+
+  &--unsubscribe {
+    background: $color-inactive;
+    color: #fff;
+  }
+
+  &--emit {
+    background: $color-emit;
+    color: #fff;
+  }
+}
+
+// ── Timeline ──
+.sub-demo__timeline {
+  margin-bottom: 1.5rem;
+
+  h3 {
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+  }
+}
+
+.sub-demo__events {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sub-demo__event {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background: rgba($color-emit, 0.15);
+  border: 1px solid rgba($color-emit, 0.3);
+  border-radius: $radius;
+  animation: fadeIn 0.3s ease;
+}
+
+.sub-demo__event-id {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: $color-emit;
+}
+
+.sub-demo__event-time {
+  font-size: 0.7rem;
+  color: $color-muted;
+  margin-top: 0.15rem;
+}
+
+// ── Event Log ──
+.sub-demo__log {
+  h3 {
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+  }
+}
+
+.sub-demo__log-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+
+  li {
+    padding: 0.35rem 0;
+    border-bottom: 1px solid $color-border;
+    font-size: 0.85rem;
+    font-family: "Fira Code", "Consolas", monospace;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+// ── Empty state ──
+.sub-demo__empty {
+  color: $color-muted;
+  font-style: italic;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+// ── Animation ──
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

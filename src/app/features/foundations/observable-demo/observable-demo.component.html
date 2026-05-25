@@ -1,0 +1,35 @@
+<div class="demo-page">
+  <h1>Reactive Lab</h1>
+  <h2>Concept 1: Observable</h2>
+
+  <p>Click the button to emit events over time.</p>
+
+  <!-- Here Angular handles the click 
+  <button (click)="emitEvent()">
+    Emit Event
+  </button> -->
+
+  <button #emitEventButton>Emit Event</button>
+
+  <section class="timeline">
+    <h3>Timeline</h3>
+
+    <div class="timeline-track">
+      @for (event of emittedEvents; track event.id) {
+        <div class="timeline-dot"></div>
+      }
+    </div>
+  </section>
+
+  <section class="event-log">
+    <h3>Event Log</h3>
+
+    <ul>
+      @for (event of emittedEvents; track event.id) {
+        <li>
+          {{ event.label }}
+        </li>
+      }
+    </ul>
+  </section>
+</div>

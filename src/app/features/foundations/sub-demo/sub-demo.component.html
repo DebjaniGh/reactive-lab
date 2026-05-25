@@ -1,0 +1,75 @@
+<!-- sub-demo.component.html -->
+
+<section class="sub-demo">
+  <!-- Header -->
+  <header class="sub-demo__header">
+    <h2>🔌 Subscription & Laziness</h2>
+    <p class="sub-demo__subtitle">
+      Observables are lazy — nothing happens until you subscribe.
+    </p>
+  </header>
+
+  <!-- Status Indicator -->
+  <div
+    class="sub-demo__status"
+    [class.sub-demo__status--active]="isSubscribed"
+    [class.sub-demo__status--inactive]="!isSubscribed"
+  >
+    <span class="sub-demo__status-dot"></span>
+    {{ isSubscribed ? "🎧 Subscribed — Listening" : "🔇 Not Subscribed" }}
+  </div>
+
+  <!-- Controls -->
+  <div class="sub-demo__controls">
+    <button
+      class="btn btn--subscribe"
+      (click)="onSubscribe()"
+      [disabled]="isSubscribed"
+    >
+      ▶ Subscribe
+    </button>
+
+    <button
+      class="btn btn--unsubscribe"
+      (click)="onUnsubscribe()"
+      [disabled]="!isSubscribed"
+    >
+      ⏹ Unsubscribe
+    </button>
+
+    <button class="btn btn--emit" (click)="onEmit()">📡 Emit Event</button>
+  </div>
+
+  <!-- Timeline -->
+  <div class="sub-demo__timeline">
+    <h3>📊 Timeline</h3>
+    @if (timeline.length === 0) {
+      <p class="sub-demo__empty">No events received yet.</p>
+    } @else {
+      <div class="sub-demo__events">
+        @for (event of timeline; track event.id) {
+          <div class="sub-demo__event">
+            <span class="sub-demo__event-id">{{ event.label }}</span>
+            <span class="sub-demo__event-time">
+              {{ event.timestamp | date: "HH:mm:ss.SSS" }}
+            </span>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Event Log -->
+  <div class="sub-demo__log">
+    <h3>📋 Event Log</h3>
+    @if (log.length === 0) {
+      <p class="sub-demo__empty">Waiting for activity...</p>
+    } @else {
+      <ul class="sub-demo__log-list">
+        @for (entry of log; track $index) {
+          <li>{{ entry }}</li>
+        }
+      </ul>
+    }
+  </div>
+</section>
