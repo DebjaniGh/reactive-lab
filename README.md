@@ -1,27 +1,42 @@
-# ReactiveLab
+# ReactiveLab – RxJS Operators Playground
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.7.
+ReactiveLab is an Angular 19 application that **demonstrates how individual RxJS operators transform observable streams**. Each operator has its own interactive demo so you can tweak inputs, see real-time visualisations and immediately understand the operator’s behaviour. It is hosted at https://reactive-lab.vercel.app
 
-## Development server
+## Why this project exists
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Learning RxJS from documentation alone can be abstract. This playground lets you:
 
-## Code scaffolding
+- **Experiment** with operators like `map`, `filter`, `merge`, `switchMap`, `debounceTime`, `combineLatest`, `zip`, etc.
+- **Observe** live marble diagrams / log output as streams flow through the operator.
+- **Compare** operators side by side to pick the right tool for your use-case.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Getting started
 
-## Build
+```bash
+# install dependencies
+npm install
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+# start development server
+ng serve
+```
 
-## Running unit tests
+Then open `http://localhost:4200/` in your browser; the app reloads on code changes.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Project structure
 
-## Running end-to-end tests
+- `src/app/operators/*` – one component per operator demo
+- `src/app/shared/*` – reusable helpers (e.g. marble visualiser)
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Scripts
 
-## Further help
+- **Build** (production): `ng build`
+- **Unit tests**: `ng test`
+- **E2E tests**: `ng e2e` (add a compatible runner first)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Contributing
+
+Want to add a new operator demo or improve existing ones? Pull requests are welcome! Please open an issue first if you plan a large change.
+
+## License
+
+MIT
