@@ -10,11 +10,10 @@ interface TimelineEvent {
 }
 
 @Component({
-  selector: 'app-sub-demo',
-  standalone: true,
-  imports: [DatePipe],
-  templateUrl: './sub-demo.component.html',
-  styleUrl: './sub-demo.component.scss',
+    selector: 'app-sub-demo',
+    imports: [DatePipe],
+    templateUrl: './sub-demo.component.html',
+    styleUrl: './sub-demo.component.scss'
 })
 export class SubDemoComponent {
   // our event source

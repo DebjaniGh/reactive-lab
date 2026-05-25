@@ -7,11 +7,10 @@ interface DemoEvent {
 }
 
 @Component({
-  selector: 'app-observable-demo',
-  standalone: true,
-  imports: [],
-  templateUrl: './observable-demo.component.html',
-  styleUrl: './observable-demo.component.scss',
+    selector: 'app-observable-demo',
+    imports: [],
+    templateUrl: './observable-demo.component.html',
+    styleUrl: './observable-demo.component.scss'
 })
 export class ObservableDemoComponent implements AfterViewInit {
   // get the DOM reference of the emit event button
