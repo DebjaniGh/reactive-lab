@@ -20,4 +20,11 @@ export const routes: Routes = [
         (m) => m.SubDemoComponent,
       ),
   },
+  {
+    path: 'pipe-demo',
+    loadComponent: () =>
+      import('./features/foundations/pipe-demo/pipe-demo.component').then(
+        (m) => m.PipeDemoComponent,
+      ),
+  },
 ];

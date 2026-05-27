@@ -1,0 +1,101 @@
+<!-- pipe-demo.component.html -->
+
+<section class="pipe-demo">
+  <!-- ① Header -->
+  <header class="pipe-demo__header">
+    <h2>🔗 Operators & pipe()</h2>
+    <p class="pipe-demo__subtitle">
+      Watch values flow through map() and filter() — the conveyor belt made
+      visible.
+    </p>
+  </header>
+
+  <!-- ② Controls -->
+  <div class="pipe-demo__controls">
+    <label class="pipe-demo__input-group">
+      <span>Emit a number:</span>
+      <input
+        type="number"
+        [(ngModel)]="inputValue"
+        class="pipe-demo__input"
+        (keyup.enter)="onEmit()"
+      />
+    </label>
+
+    <div class="pipe-demo__buttons">
+      <button class="btn btn--emit" (click)="onEmit()">📡 Emit</button>
+      <button class="btn btn--clear" (click)="onClear()">🗑️ Clear</button>
+    </div>
+  </div>
+
+  <!-- ③ Pipeline Diagram (static visual) -->
+  <div class="pipe-demo__diagram">
+    <div class="pipe-demo__stage pipe-demo__stage--raw">🟡 Raw Value</div>
+    <span class="pipe-demo__arrow">→</span>
+    <div class="pipe-demo__stage pipe-demo__stage--map">🔵 map(x → x * 10)</div>
+    <span class="pipe-demo__arrow">→</span>
+    <div class="pipe-demo__stage pipe-demo__stage--filter">
+      🟢 filter(x → x &gt; 25)
+    </div>
+    <span class="pipe-demo__arrow">→</span>
+    <div class="pipe-demo__stage pipe-demo__stage--output">📦 subscribe()</div>
+  </div>
+
+  <!-- ④ Pipeline Results Table -->
+  <div class="pipe-demo__results">
+    <h3>📊 Pipeline Results</h3>
+    @if (pipeline.length === 0) {
+      <p class="pipe-demo__empty">
+        No values emitted yet. Enter a number and click Emit.
+      </p>
+    } @else {
+      <table class="pipe-demo__table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>🟡 Raw</th>
+            <th>🔵 After map()</th>
+            <th>🟢 filter() Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (entry of pipeline; track entry.id) {
+            <tr
+              [class.pipe-demo__row--passed]="entry.passed"
+              [class.pipe-demo__row--blocked]="!entry.passed"
+            >
+              <td>{{ entry.id }}</td>
+              <td>{{ entry.raw }}</td>
+              <td>{{ entry.mapped }}</td>
+              <td>
+                @if (entry.passed) {
+                  <span class="pipe-demo__badge pipe-demo__badge--pass"
+                    >✅ PASSED</span
+                  >
+                } @else {
+                  <span class="pipe-demo__badge pipe-demo__badge--block"
+                    >❌ BLOCKED</span
+                  >
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+
+  <!-- ⑤ Event Log -->
+  <div class="pipe-demo__log">
+    <h3>📋 Step-by-Step Log</h3>
+    @if (log.length === 0) {
+      <p class="pipe-demo__empty">Waiting for activity...</p>
+    } @else {
+      <ul class="pipe-demo__log-list">
+        @for (entry of log; track $index) {
+          <li>{{ entry }}</li>
+        }
+      </ul>
+    }
+  </div>
+</section>
