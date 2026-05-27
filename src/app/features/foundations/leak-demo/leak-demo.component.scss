@@ -1,0 +1,297 @@
+// leak-demo.component.scss
+
+// ── Design tokens ──
+$color-alive: #22c55e;
+$color-leaking: #ef4444;
+$color-clean: #64748b;
+$color-mount: #3b82f6;
+$color-surface: #1e1e2e;
+$color-surface-alt: #262639;
+$color-text: #e2e8f0;
+$color-muted: #94a3b8;
+$color-border: #334155;
+$radius: 8px;
+
+// ── Block ──
+.leak-demo {
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: $color-surface;
+  border-radius: $radius;
+  color: $color-text;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+// ── Header ──
+.leak-demo__header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+
+  h2 {
+    margin: 0 0 0.25rem;
+    font-size: 1.5rem;
+  }
+}
+
+.leak-demo__subtitle {
+  margin: 0;
+  color: $color-muted;
+  font-size: 0.9rem;
+}
+
+// ── Strategy Selector ──
+.leak-demo__strategies {
+  margin-bottom: 1.5rem;
+
+  h3 {
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+  }
+}
+
+.leak-demo__strategy-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.leak-demo__strategy-option {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  background: $color-surface-alt;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+
+  &--selected {
+    border-color: $color-mount;
+    background: rgba($color-mount, 0.1);
+  }
+
+  input[type="radio"] {
+    accent-color: $color-mount;
+  }
+}
+
+.leak-demo__hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: $color-leaking;
+  font-style: italic;
+}
+
+// ── Controls ──
+.leak-demo__controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: $radius;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    transform 0.1s ease;
+
+  &:active:not(:disabled) {
+    transform: scale(0.96);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &--mount {
+    background: $color-alive;
+    color: #fff;
+  }
+
+  &--destroy {
+    background: $color-leaking;
+    color: #fff;
+  }
+
+  &--reset {
+    background: $color-border;
+    color: $color-text;
+  }
+}
+
+// ── Status Dashboard ──
+.leak-demo__status {
+  padding: 1rem;
+  border-radius: $radius;
+  margin-bottom: 1.5rem;
+  transition: background-color 0.3s ease;
+
+  &--alive {
+    background: rgba($color-alive, 0.1);
+    border: 1px solid rgba($color-alive, 0.3);
+  }
+
+  &--leaking {
+    background: rgba($color-leaking, 0.1);
+    border: 1px solid rgba($color-leaking, 0.3);
+    animation: pulse 1.5s infinite;
+  }
+
+  &--clean {
+    background: rgba($color-clean, 0.1);
+    border: 1px solid rgba($color-clean, 0.3);
+  }
+}
+
+.leak-demo__status-text {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.leak-demo__stats {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.85rem;
+  color: $color-muted;
+  flex-wrap: wrap;
+
+  strong {
+    color: $color-text;
+  }
+}
+
+// ── Child Container ──
+.leak-demo__child-container {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: $color-surface-alt;
+  border-radius: $radius;
+  border: 1px dashed $color-border;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leak-demo__child-placeholder {
+  color: $color-muted;
+  font-style: italic;
+  font-size: 0.9rem;
+
+  p {
+    margin: 0;
+  }
+}
+
+// ── Leaky Child (scoped from parent) ──
+:host ::ng-deep .leaky-child {
+  text-align: center;
+  width: 100%;
+
+  .leaky-child__indicator {
+    font-size: 1.2rem;
+
+    strong {
+      color: $color-alive;
+      font-size: 1.4rem;
+    }
+  }
+
+  .leaky-child__strategy {
+    margin: 0.25rem 0 0;
+    font-size: 0.8rem;
+    color: $color-muted;
+
+    code {
+      background: rgba($color-mount, 0.15);
+      color: $color-mount;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+// ── Zombie Log ──
+.leak-demo__zombie-log {
+  h3 {
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+  }
+}
+
+.leak-demo__zombie-count {
+  font-size: 0.8rem;
+  color: $color-leaking;
+  font-weight: 400;
+}
+
+.leak-demo__zombie-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+
+  li {
+    padding: 0.35rem 0;
+    border-bottom: 1px solid $color-border;
+    font-size: 0.8rem;
+    font-family: "Fira Code", "Consolas", monospace;
+    color: $color-leaking;
+    animation: fadeIn 0.2s ease;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.leak-demo__zombie-time {
+  color: $color-muted;
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+}
+
+// ── Empty state ──
+.leak-demo__empty {
+  color: $color-muted;
+  font-style: italic;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+// ── Animations ──
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}

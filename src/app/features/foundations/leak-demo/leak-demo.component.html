@@ -1,0 +1,124 @@
+<!-- leak-demo.component.html -->
+
+<section class="leak-demo">
+  <!-- ① Header -->
+  <header class="leak-demo__header">
+    <h2>💀 Unsubscription & Memory Leaks</h2>
+    <p class="leak-demo__subtitle">
+      Mount and destroy a component. Watch what happens to the subscription.
+    </p>
+  </header>
+
+  <!-- ② Strategy Selector -->
+  <div class="leak-demo__strategies">
+    <h3>🛠️ Cleanup Strategy</h3>
+    <div class="leak-demo__strategy-options">
+      @for (s of strategies; track s.value) {
+        <label
+          class="leak-demo__strategy-option"
+          [class.leak-demo__strategy-option--selected]="
+            selectedStrategy === s.value
+          "
+        >
+          <input
+            type="radio"
+            name="strategy"
+            [value]="s.value"
+            [(ngModel)]="selectedStrategy"
+            [disabled]="isMounted"
+          />
+          <span>{{ s.icon }} {{ s.label }}</span>
+        </label>
+      }
+    </div>
+    @if (isMounted) {
+      <p class="leak-demo__hint">
+        ⚠️ Destroy the component before switching strategy.
+      </p>
+    }
+  </div>
+
+  <!-- ③ Controls -->
+  <div class="leak-demo__controls">
+    <button class="btn btn--mount" (click)="onMount()" [disabled]="isMounted">
+      🔌 Mount Component
+    </button>
+
+    <button
+      class="btn btn--destroy"
+      (click)="onDestroy()"
+      [disabled]="!isMounted"
+    >
+      💥 Destroy Component
+    </button>
+
+    <button class="btn btn--reset" (click)="onReset()">🗑️ Reset All</button>
+  </div>
+
+  <!-- ④ Status Dashboard -->
+  <div
+    class="leak-demo__status"
+    [class.leak-demo__status--alive]="isMounted"
+    [class.leak-demo__status--leaking]="isLeaking"
+    [class.leak-demo__status--clean]="!isMounted && !isLeaking"
+  >
+    <div class="leak-demo__status-text">{{ statusLabel }}</div>
+    <div class="leak-demo__stats">
+      <span
+        >Active Subs: <strong>{{ activeSubs }}</strong></span
+      >
+      <span
+        >Mount Cycles: <strong>{{ mountCount }}</strong></span
+      >
+      <span
+        >Zombie Ticks: <strong>{{ zombieLog.length }}</strong></span
+      >
+    </div>
+  </div>
+
+  <!-- ⑤ Child Component Mount Point -->
+  <div class="leak-demo__child-container">
+    @if (isMounted) {
+      <app-leaky-child
+        [strategy]="selectedStrategy"
+        (zombieTick)="onZombieTick($event)"
+      />
+    } @else {
+      <div class="leak-demo__child-placeholder">
+        <p>💤 No component mounted</p>
+      </div>
+    }
+  </div>
+
+  <!-- ⑥ Zombie Log -->
+  <div class="leak-demo__zombie-log">
+    <h3>
+      💀 Zombie Log
+      @if (zombieLog.length > 0) {
+        <span class="leak-demo__zombie-count">
+          ({{ zombieLog.length }} ghost ticks)
+        </span>
+      }
+    </h3>
+
+    @if (zombieLog.length === 0) {
+      <p class="leak-demo__empty">
+        No zombie activity detected.
+        @if (selectedStrategy === "none") {
+          Try mounting, then destroying the component.
+        }
+      </p>
+    } @else {
+      <ul class="leak-demo__zombie-list">
+        @for (z of zombieLog; track z.id) {
+          <li>
+            💀 Instance #{{ z.instance }} — tick {{ z.tick }}
+            <span class="leak-demo__zombie-time">
+              {{ z.timestamp | date: "HH:mm:ss.SSS" }}
+            </span>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</section>

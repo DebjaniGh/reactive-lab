@@ -26,5 +26,10 @@ export class AppComponent {
     { path: 'observable-demo', label: 'Observable Demo', icon: 'visibility' },
     { path: 'sub-demo', label: 'Subscription Demo', icon: 'podcasts' },
     { path: 'pipe-demo', label: 'Pipe Demo', icon: 'plumbing' },
+    {
+      path: 'leak-demo',
+      label: 'Leak Demo',
+      icon: 'bug_report',
+    },
   ];
 }

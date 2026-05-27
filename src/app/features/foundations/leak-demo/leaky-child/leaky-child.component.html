@@ -1,0 +1,15 @@
+<!-- leaky-child.component.html -->
+
+<div class="leaky-child">
+  <div class="leaky-child__indicator">
+    ⏱️ Tick:
+    @if (strategy === "async") {
+      <strong>{{ (tick$ | async) ?? 0 }}</strong>
+    } @else {
+      <strong>{{ tick }}</strong>
+    }
+  </div>
+  <p class="leaky-child__strategy">
+    Strategy: <code>{{ strategy }}</code>
+  </p>
+</div>

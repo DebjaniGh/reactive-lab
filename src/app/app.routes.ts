@@ -27,4 +27,11 @@ export const routes: Routes = [
         (m) => m.PipeDemoComponent,
       ),
   },
+  {
+    path: 'leak-demo',
+    loadComponent: () =>
+      import('./features/foundations/leak-demo/leak-demo.component').then(
+        (m) => m.LeakDemoComponent,
+      ),
+  },
 ];
