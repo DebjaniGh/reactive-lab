@@ -34,4 +34,11 @@ export const routes: Routes = [
         (m) => m.LeakDemoComponent,
       ),
   },
+  {
+    path: 'scan-demo',
+    loadComponent: () =>
+      import('./features/foundations/scan-demo/scan-demo.component').then(
+        (m) => m.ScanDemoComponent,
+      ),
+  },
 ];

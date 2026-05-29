@@ -31,5 +31,10 @@ export class AppComponent {
       label: 'Leak Demo',
       icon: 'bug_report',
     },
+    {
+      path: 'scan-demo',
+      label: 'Scan Demo',
+      icon: 'inventory',
+    },
   ];
 }

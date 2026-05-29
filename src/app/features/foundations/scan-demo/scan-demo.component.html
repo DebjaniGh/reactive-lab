@@ -1,0 +1,56 @@
+<!-- scan-demo.component.html -->
+
+<section class="scan-demo">
+  <!-- ① Header -->
+  <header class="scan-demo__header">
+    <h2>📊 scan() — The Accumulator</h2>
+    <p class="scan-demo__subtitle">
+      <code>scan()</code> remembers the previous value and accumulates over
+      time.
+    </p>
+  </header>
+
+  <!-- ② Counter Panel -->
+  <div class="scan-demo__panels">
+    <div class="scan-demo__panel">
+      <h3>🔢 Counter</h3>
+      <p class="scan-demo__panel-desc">
+        <code>scan((acc, val) =&gt; acc + val, 0)</code>
+      </p>
+
+      <div class="scan-demo__counter-display">
+        {{ counterValue }}
+      </div>
+
+      <div class="scan-demo__counter-buttons">
+        <button class="btn btn--counter" (click)="onCounter(-5)">-5</button>
+        <button class="btn btn--counter" (click)="onCounter(-1)">-1</button>
+        <button class="btn btn--counter" (click)="onCounter(1)">+1</button>
+        <button class="btn btn--counter" (click)="onCounter(5)">+5</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ Scan Pipeline Log -->
+  <div class="scan-demo__log">
+    <div class="scan-demo__log-header">
+      <h3>📋 Scan Pipeline Log</h3>
+      <button class="btn btn--clear" (click)="onClearLog()">🗑️ Clear</button>
+    </div>
+
+    @if (log.length === 0) {
+      <p class="scan-demo__empty">
+        Click the counter buttons to see scan() in action.
+      </p>
+    } @else {
+      <ul class="scan-demo__log-list">
+        @for (entry of log; track entry.id) {
+          <li>
+            <span class="scan-demo__log-panel">{{ entry.panel }}</span>
+            {{ entry.message }}
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</section>

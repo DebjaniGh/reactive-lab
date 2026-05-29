@@ -1,0 +1,185 @@
+// scan-demo.component.scss
+
+// ── Design tokens ──
+$color-counter: #60a5fa;
+$color-surface: #2d2d44;
+$color-surface-alt: #363650;
+$color-text: #f1f5f9;
+$color-muted: #b0bec5;
+$color-border: #4a4a6a;
+$radius: 8px;
+
+// ── Block ──
+.scan-demo {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: $color-surface;
+  border-radius: $radius;
+  color: $color-text;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+// ── Header ──
+.scan-demo__header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+
+  h2 {
+    margin: 0 0 0.25rem;
+    font-size: 1.5rem;
+  }
+}
+
+.scan-demo__subtitle {
+  margin: 0;
+  color: $color-muted;
+  font-size: 0.9rem;
+
+  code {
+    background: rgba($color-counter, 0.15);
+    color: $color-counter;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+  }
+}
+
+// ── Panels Grid ──
+.scan-demo__panels {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.scan-demo__panel {
+  background: $color-surface-alt;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+}
+
+.scan-demo__panel-desc {
+  margin: 0;
+
+  code {
+    font-size: 0.75rem;
+    background: rgba($color-counter, 0.1);
+    color: $color-counter;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+  }
+}
+
+// ── Counter ──
+.scan-demo__counter-display {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: $color-counter;
+  font-family: "Fira Code", "Consolas", monospace;
+  min-height: 3.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.scan-demo__counter-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+// ── Buttons ──
+.btn {
+  padding: 0.5rem 0.9rem;
+  border: none;
+  border-radius: $radius;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    transform 0.1s ease;
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &--counter {
+    background: rgba($color-counter, 0.2);
+    color: $color-counter;
+  }
+
+  &--clear {
+    background: rgba($color-border, 0.5);
+    color: $color-muted;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
+
+// ── Log ──
+.scan-demo__log {
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+}
+
+.scan-demo__log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.scan-demo__log-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+
+  li {
+    padding: 0.35rem 0;
+    border-bottom: 1px solid $color-border;
+    font-size: 0.8rem;
+    font-family: "Fira Code", "Consolas", monospace;
+    animation: fadeIn 0.2s ease;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.scan-demo__log-panel {
+  margin-right: 0.4rem;
+}
+
+// ── Empty state ──
+.scan-demo__empty {
+  color: $color-muted;
+  font-style: italic;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+// ── Animation ──
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
