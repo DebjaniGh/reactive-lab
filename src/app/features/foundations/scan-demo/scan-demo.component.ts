@@ -26,17 +26,17 @@ function counterReducer(acc: number, val: number): number {
   styleUrl: './scan-demo.component.scss',
 })
 export class ScanDemoComponent implements OnDestroy {
-  // ① The Subject — entry point for counter events
+  // The Subject — entry point for counter events
   private counter$$ = new Subject<number>();
 
-  // ② Subscription tracker
+  // Subscription tracker
   private subs: Subscription[] = [];
 
-  // ③ Public state for template
+  // Public state for template
   counterValue = 0;
   log: LogEntry[] = [];
 
-  // ④ Log counter
+  // Log counter
   private logCounter = 0;
 
   constructor() {
