@@ -1,29 +1,23 @@
 // scan-demo.component.scss
 
-// ── Design tokens ──
-$color-counter: #60a5fa;
-$color-surface: #2d2d44;
-$color-surface-alt: #363650;
-$color-text: #f1f5f9;
-$color-muted: #b0bec5;
-$color-border: #4a4a6a;
+// ── Design tokens (light theme) ──
+$color-counter: #1565c0;
+$color-text: #212121;
+$color-muted: #666;
+$color-border: #ddd;
 $radius: 8px;
 
 // ── Block ──
 .scan-demo {
-  max-width: 800px;
-  margin: 2rem auto;
+  max-width: 900px;
+  margin: 0 auto;
   padding: 2rem;
-  background: $color-surface;
-  border-radius: $radius;
   color: $color-text;
-  font-family: "Segoe UI", system-ui, sans-serif;
 }
 
 // ── Header ──
 .scan-demo__header {
   margin-bottom: 1.5rem;
-  text-align: center;
 
   h2 {
     margin: 0 0 0.25rem;
@@ -37,7 +31,7 @@ $radius: 8px;
   font-size: 0.9rem;
 
   code {
-    background: rgba($color-counter, 0.15);
+    background: rgba($color-counter, 0.1);
     color: $color-counter;
     padding: 0.1rem 0.4rem;
     border-radius: 4px;
@@ -53,8 +47,8 @@ $radius: 8px;
 }
 
 .scan-demo__panel {
-  background: $color-surface-alt;
-  border: 1px solid $color-border;
+  background: #fff;
+  border: 2px solid $color-border;
   border-radius: $radius;
   padding: 1.25rem;
   display: flex;
@@ -73,7 +67,7 @@ $radius: 8px;
 
   code {
     font-size: 0.75rem;
-    background: rgba($color-counter, 0.1);
+    background: rgba($color-counter, 0.08);
     color: $color-counter;
     padding: 0.15rem 0.4rem;
     border-radius: 4px;
@@ -98,28 +92,41 @@ $radius: 8px;
 
 // ── Buttons ──
 .btn {
-  padding: 0.5rem 0.9rem;
-  border: none;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid $color-border;
   border-radius: $radius;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
+  background: #fff;
+  color: $color-text;
   transition:
     opacity 0.2s ease,
     transform 0.1s ease;
+
+  &:hover {
+    background: #f0f0f0;
+  }
 
   &:active {
     transform: scale(0.95);
   }
 
   &--counter {
-    background: rgba($color-counter, 0.2);
+    background: rgba($color-counter, 0.1);
     color: $color-counter;
+    border-color: rgba($color-counter, 0.3);
+    &:hover:not(:disabled) {
+      background: rgba($color-counter, 0.15);
+      border-color: rgba($color-counter, 0.4);
+      color: $color-counter;
+    }
   }
 
   &--clear {
-    background: rgba($color-border, 0.5);
+    background: #fff;
     color: $color-muted;
+    border-color: $color-border;
     font-size: 0.75rem;
     padding: 0.3rem 0.6rem;
   }

@@ -1,32 +1,26 @@
 // leak-demo.component.scss
 
-// ── Design tokens ──
-$color-alive: #22c55e;
-$color-leaking: #ef4444;
-$color-clean: #64748b;
-$color-mount: #3b82f6;
-$color-surface: #1e1e2e;
-$color-surface-alt: #262639;
-$color-text: #e2e8f0;
-$color-muted: #94a3b8;
-$color-border: #334155;
+// ── Design tokens (light theme) ──
+$color-alive: #2e7d32;
+$color-leaking: #c62828;
+$color-clean: #666;
+$color-mount: #1565c0;
+$color-text: #212121;
+$color-muted: #666;
+$color-border: #ddd;
 $radius: 8px;
 
 // ── Block ──
 .leak-demo {
-  max-width: 720px;
-  margin: 2rem auto;
+  max-width: 900px;
+  margin: 0 auto;
   padding: 2rem;
-  background: $color-surface;
-  border-radius: $radius;
   color: $color-text;
-  font-family: "Segoe UI", system-ui, sans-serif;
 }
 
 // ── Header ──
 .leak-demo__header {
   margin-bottom: 1.5rem;
-  text-align: center;
 
   h2 {
     margin: 0 0 0.25rem;
@@ -61,7 +55,7 @@ $radius: 8px;
   align-items: center;
   gap: 0.4rem;
   padding: 0.5rem 0.75rem;
-  background: $color-surface-alt;
+  background: #fff;
   border: 1px solid $color-border;
   border-radius: $radius;
   cursor: pointer;
@@ -72,7 +66,7 @@ $radius: 8px;
 
   &--selected {
     border-color: $color-mount;
-    background: rgba($color-mount, 0.1);
+    background: rgba($color-mount, 0.08);
   }
 
   input[type="radio"] {
@@ -96,15 +90,21 @@ $radius: 8px;
 }
 
 .btn {
-  padding: 0.6rem 1.2rem;
-  border: none;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid $color-border;
   border-radius: $radius;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
+  background: #fff;
+  color: $color-text;
   transition:
     opacity 0.2s ease,
     transform 0.1s ease;
+
+  &:hover:not(:disabled) {
+    background: #f0f0f0;
+  }
 
   &:active:not(:disabled) {
     transform: scale(0.96);
@@ -118,16 +118,33 @@ $radius: 8px;
   &--mount {
     background: $color-alive;
     color: #fff;
+    border-color: $color-alive;
+    &:hover:not(:disabled) {
+      background: darken($color-alive, 5%);
+      border-color: darken($color-alive, 5%);
+      color: #fff;
+    }
   }
 
   &--destroy {
     background: $color-leaking;
     color: #fff;
+    border-color: $color-leaking;
+    &:hover:not(:disabled) {
+      background: darken($color-leaking, 5%);
+      border-color: darken($color-leaking, 5%);
+      color: #fff;
+    }
   }
 
   &--reset {
-    background: $color-border;
-    color: $color-text;
+    background: #fff;
+    color: $color-muted;
+    border-color: $color-border;
+    &:hover:not(:disabled) {
+      background: #f0f0f0;
+      color: $color-text;
+    }
   }
 }
 
@@ -136,22 +153,25 @@ $radius: 8px;
   padding: 1rem;
   border-radius: $radius;
   margin-bottom: 1.5rem;
-  transition: background-color 0.3s ease;
+  border: 2px solid $color-border;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
 
   &--alive {
-    background: rgba($color-alive, 0.1);
-    border: 1px solid rgba($color-alive, 0.3);
+    background: rgba($color-alive, 0.06);
+    border-color: $color-alive;
   }
 
   &--leaking {
-    background: rgba($color-leaking, 0.1);
-    border: 1px solid rgba($color-leaking, 0.3);
+    background: rgba($color-leaking, 0.06);
+    border-color: $color-leaking;
     animation: pulse 1.5s infinite;
   }
 
   &--clean {
-    background: rgba($color-clean, 0.1);
-    border: 1px solid rgba($color-clean, 0.3);
+    background: rgba($color-clean, 0.06);
+    border-color: $color-border;
   }
 }
 
@@ -177,9 +197,9 @@ $radius: 8px;
 .leak-demo__child-container {
   margin-bottom: 1.5rem;
   padding: 1rem;
-  background: $color-surface-alt;
+  background: #fff;
   border-radius: $radius;
-  border: 1px dashed $color-border;
+  border: 2px dashed $color-border;
   min-height: 60px;
   display: flex;
   align-items: center;
@@ -216,7 +236,7 @@ $radius: 8px;
     color: $color-muted;
 
     code {
-      background: rgba($color-mount, 0.15);
+      background: rgba($color-mount, 0.1);
       color: $color-mount;
       padding: 0.1rem 0.4rem;
       border-radius: 4px;

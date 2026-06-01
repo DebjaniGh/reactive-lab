@@ -1,33 +1,27 @@
 // pipe-demo.component.scss
 
-// ── Design tokens ──
-$color-raw: #eab308; // yellow — raw value
-$color-map: #3b82f6; // blue — map stage
-$color-filter: #22c55e; // green — filter pass
-$color-blocked: #ef4444; // red — filter block
-$color-output: #a855f7; // purple — subscribe output
-$color-surface: #1e1e2e; // dark card background
-$color-surface-alt: #262639; // slightly lighter surface
-$color-text: #e2e8f0; // light text
-$color-muted: #94a3b8; // secondary text
-$color-border: #334155; // subtle borders
+// ── Design tokens (light theme) ──
+$color-raw: #b8860b; // dark gold — raw value
+$color-map: #1565c0; // blue — map stage
+$color-filter: #2e7d32; // green — filter pass
+$color-blocked: #c62828; // red — filter block
+$color-output: #7b1fa2; // purple — subscribe output
+$color-text: #212121;
+$color-muted: #666;
+$color-border: #ddd;
 $radius: 8px;
 
 // ── Block ──
 .pipe-demo {
-  max-width: 720px;
-  margin: 2rem auto;
+  max-width: 900px;
+  margin: 0 auto;
   padding: 2rem;
-  background: $color-surface;
-  border-radius: $radius;
   color: $color-text;
-  font-family: "Segoe UI", system-ui, sans-serif;
 }
 
 // ── Header ──
 .pipe-demo__header {
   margin-bottom: 1.5rem;
-  text-align: center;
 
   h2 {
     margin: 0 0 0.25rem;
@@ -67,7 +61,7 @@ $radius: 8px;
   padding: 0.6rem 0.75rem;
   border: 1px solid $color-border;
   border-radius: $radius;
-  background: $color-surface-alt;
+  background: #fff;
   color: $color-text;
   font-size: 1rem;
   outline: none;
@@ -84,15 +78,21 @@ $radius: 8px;
 }
 
 .btn {
-  padding: 0.6rem 1.2rem;
-  border: none;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid $color-border;
   border-radius: $radius;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
+  background: #fff;
+  color: $color-text;
   transition:
     opacity 0.2s ease,
     transform 0.1s ease;
+
+  &:hover {
+    background: #f0f0f0;
+  }
 
   &:active {
     transform: scale(0.96);
@@ -101,11 +101,18 @@ $radius: 8px;
   &--emit {
     background: $color-map;
     color: #fff;
+    border-color: $color-map;
+    &:hover:not(:disabled) {
+      background: darken($color-map, 5%);
+      border-color: darken($color-map, 5%);
+      color: #fff;
+    }
   }
 
   &--clear {
-    background: $color-border;
-    color: $color-text;
+    background: #fff;
+    color: $color-muted;
+    border-color: $color-border;
   }
 }
 
@@ -117,7 +124,8 @@ $radius: 8px;
   gap: 0.5rem;
   padding: 1rem;
   margin-bottom: 1.5rem;
-  background: $color-surface-alt;
+  background: #fff;
+  border: 2px solid $color-border;
   border-radius: $radius;
   flex-wrap: wrap;
 }
@@ -131,25 +139,25 @@ $radius: 8px;
   white-space: nowrap;
 
   &--raw {
-    background: rgba($color-raw, 0.15);
+    background: rgba($color-raw, 0.1);
     color: $color-raw;
     border: 1px solid rgba($color-raw, 0.3);
   }
 
   &--map {
-    background: rgba($color-map, 0.15);
+    background: rgba($color-map, 0.1);
     color: $color-map;
     border: 1px solid rgba($color-map, 0.3);
   }
 
   &--filter {
-    background: rgba($color-filter, 0.15);
+    background: rgba($color-filter, 0.1);
     color: $color-filter;
     border: 1px solid rgba($color-filter, 0.3);
   }
 
   &--output {
-    background: rgba($color-output, 0.15);
+    background: rgba($color-output, 0.1);
     color: $color-output;
     border: 1px solid rgba($color-output, 0.3);
   }
@@ -179,7 +187,7 @@ $radius: 8px;
   th {
     text-align: left;
     padding: 0.6rem 0.75rem;
-    background: $color-surface-alt;
+    background: #f0f0f0;
     border-bottom: 2px solid $color-border;
     font-weight: 600;
     color: $color-muted;
@@ -193,13 +201,13 @@ $radius: 8px;
 
 .pipe-demo__row--passed {
   td {
-    background: rgba($color-filter, 0.05);
+    background: rgba($color-filter, 0.06);
   }
 }
 
 .pipe-demo__row--blocked {
   td {
-    background: rgba($color-blocked, 0.05);
+    background: rgba($color-blocked, 0.06);
     opacity: 0.7;
   }
 }
@@ -212,12 +220,12 @@ $radius: 8px;
   font-weight: 700;
 
   &--pass {
-    background: rgba($color-filter, 0.2);
+    background: rgba($color-filter, 0.15);
     color: $color-filter;
   }
 
   &--block {
-    background: rgba($color-blocked, 0.2);
+    background: rgba($color-blocked, 0.15);
     color: $color-blocked;
   }
 }

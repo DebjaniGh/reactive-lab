@@ -1,30 +1,25 @@
 // sub-demo.component.scss
 
-// ── Design tokens (local to this component) ──
-$color-active: #22c55e; // green — subscribed
-$color-inactive: #ef4444; // red — not subscribed
-$color-emit: #3b82f6; // blue — emit action
-$color-surface: #1e1e2e; // dark card background
-$color-text: #e2e8f0; // light text
-$color-muted: #94a3b8; // secondary text
-$color-border: #334155; // subtle borders
+// ── Design tokens (light theme) ──
+$color-active: #2e7d32; // green — subscribed
+$color-inactive: #c62828; // red — not subscribed
+$color-emit: #1565c0; // blue — emit action
+$color-text: #212121;
+$color-muted: #666;
+$color-border: #ddd;
 $radius: 8px;
 
 // ── Block ──
 .sub-demo {
-  max-width: 640px;
-  margin: 2rem auto;
+  max-width: 900px;
+  margin: 0 auto;
   padding: 2rem;
-  background: $color-surface;
-  border-radius: $radius;
   color: $color-text;
-  font-family: "Segoe UI", system-ui, sans-serif;
 }
 
 // ── Header ──
 .sub-demo__header {
   margin-bottom: 1.5rem;
-  text-align: center;
 
   h2 {
     margin: 0 0 0.25rem;
@@ -42,34 +37,34 @@ $radius: 8px;
 .sub-demo__status {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
   margin-bottom: 1.5rem;
   border-radius: $radius;
+  border: 2px solid $color-border;
   font-weight: 600;
   font-size: 0.95rem;
   transition:
     background-color 0.3s ease,
-    color 0.3s ease;
+    border-color 0.3s ease;
 
   &--active {
-    background: rgba($color-active, 0.15);
+    background: rgba($color-active, 0.08);
+    border-color: $color-active;
     color: $color-active;
 
     .sub-demo__status-dot {
       background: $color-active;
-      box-shadow: 0 0 8px rgba($color-active, 0.6);
     }
   }
 
   &--inactive {
-    background: rgba($color-inactive, 0.15);
+    background: rgba($color-inactive, 0.08);
+    border-color: $color-inactive;
     color: $color-inactive;
 
     .sub-demo__status-dot {
       background: $color-inactive;
-      box-shadow: 0 0 8px rgba($color-inactive, 0.6);
     }
   }
 }
@@ -78,30 +73,33 @@ $radius: 8px;
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  transition:
-    background-color 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 // ── Controls ──
 .sub-demo__controls {
   display: flex;
   gap: 0.75rem;
-  justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
 }
 
 .btn {
-  padding: 0.6rem 1.2rem;
-  border: none;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid $color-border;
   border-radius: $radius;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
+  background: #fff;
+  color: $color-text;
   transition:
     opacity 0.2s ease,
     transform 0.1s ease;
+
+  &:hover:not(:disabled) {
+    background: #f0f0f0;
+  }
 
   &:active:not(:disabled) {
     transform: scale(0.96);
@@ -115,22 +113,40 @@ $radius: 8px;
   &--subscribe {
     background: $color-active;
     color: #fff;
+    border-color: $color-active;
+    &:hover:not(:disabled) {
+      background: darken($color-active, 5%);
+      border-color: darken($color-active, 5%);
+      color: #fff;
+    }
   }
 
   &--unsubscribe {
     background: $color-inactive;
     color: #fff;
+    border-color: $color-inactive;
+    &:hover:not(:disabled) {
+      background: darken($color-inactive, 5%);
+      border-color: darken($color-inactive, 5%);
+      color: #fff;
+    }
   }
 
   &--emit {
     background: $color-emit;
     color: #fff;
+    border-color: $color-emit;
+    &:hover:not(:disabled) {
+      background: darken($color-emit, 5%);
+      border-color: darken($color-emit, 5%);
+      color: #fff;
+    }
   }
 }
 
 // ── Timeline ──
 .sub-demo__timeline {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 
   h3 {
     margin: 0 0 0.75rem;
@@ -142,6 +158,10 @@ $radius: 8px;
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  min-height: 60px;
+  border: 2px solid $color-border;
+  padding: 1rem;
+  border-radius: $radius;
 }
 
 .sub-demo__event {
@@ -149,8 +169,8 @@ $radius: 8px;
   flex-direction: column;
   align-items: center;
   padding: 0.5rem 0.75rem;
-  background: rgba($color-emit, 0.15);
-  border: 1px solid rgba($color-emit, 0.3);
+  background: rgba($color-emit, 0.1);
+  border: 1px solid rgba($color-emit, 0.25);
   border-radius: $radius;
   animation: fadeIn 0.3s ease;
 }
