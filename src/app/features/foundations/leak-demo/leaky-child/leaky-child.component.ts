@@ -12,7 +12,8 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { interval, Subscription } from 'rxjs';
+import { interval, Subscription, takeUntil } from 'rxjs';
+import { LeakTrackerService } from '../leak-tracker.service';
 
 /** The four cleanup strategies we demo */
 export type CleanupStrategy =
@@ -43,9 +44,11 @@ export class LeakyChildComponent implements OnInit, OnDestroy {
 
   // Internal cleanup tools
   private sub: Subscription | null = null;
-  private destroyRef = inject(DestroyRef); // modern Angular way; no need for boilerplate constructor
+  constructor(private leakTracker: LeakTrackerService, private destroyRef: DestroyRef) {}
 
   ngOnInit(): void {
+    console.log('🟢 CHILD ngOnInit — strategy:', this.strategy);
+
     // 'async' strategy doesn't need manual subscribe — template handles it
     if (this.strategy === 'async') return;
 
@@ -54,13 +57,16 @@ export class LeakyChildComponent implements OnInit, OnDestroy {
     switch (this.strategy) {
       // DANGEROUS: no cleanup at all
       case 'none':
-        this.sub = source$.subscribe((t) => this.handleTick(t));
+        console.log('🟢 Subscribing with NO cleanup');
+        this.sub = source$.pipe(takeUntil(this.leakTracker.forceKill$$))   //  kill switch
+         .subscribe((t) => this.handleTick(t));
         break;
 
       // same code for both none and manual BUT for
       //  MANUAL: we'll unsubscribe in ngOnDestroy
       case 'manual':
-        this.sub = source$.subscribe((t) => this.handleTick(t));
+        this.sub = source$.pipe(takeUntil(this.leakTracker.forceKill$$)). // kill switch
+        subscribe((t) => this.handleTick(t));
         break;
 
       // ✅ MODERN: takeUntilDestroyed auto-completes when component dies
@@ -75,14 +81,20 @@ export class LeakyChildComponent implements OnInit, OnDestroy {
   /** Process each tick — whether component is alive or zombie */
   private handleTick(t: number): void {
     this.tick = t + 1;
+    console.log('⏱️ TICK fired:', this.tick, '| alive:', this.alive);
 
     if (!this.alive) {
-      // 💀 We're a zombie — component was destroyed but sub is still firing
-      this.zombieTick.emit(this.tick);
+      console.log('💀 ZOMBIE TICK — emitting to parent:', this.tick);
+
+      // We're a zombie — component was destroyed but sub is still firing
+      // this.zombieTick.emit(this.tick);
+      this.leakTracker.reportZombie(this.tick);
     }
   }
 
   ngOnDestroy(): void {
+    console.log('🔴 CHILD ngOnDestroy — strategy:', this.strategy);
+
     this.alive = false;
 
     // Only the 'manual' strategy cleans up here

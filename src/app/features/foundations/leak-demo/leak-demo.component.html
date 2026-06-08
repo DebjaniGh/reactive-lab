@@ -81,7 +81,6 @@
     @if (isMounted) {
       <app-leaky-child
         [strategy]="selectedStrategy"
-        (zombieTick)="onZombieTick($event)"
       />
     } @else {
       <div class="leak-demo__child-placeholder">

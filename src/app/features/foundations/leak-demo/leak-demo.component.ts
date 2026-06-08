@@ -1,12 +1,13 @@
 // leak-demo.component.ts
 
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   LeakyChildComponent,
   CleanupStrategy,
 } from './leaky-child/leaky-child.component';
+import { LeakTrackerService } from './leak-tracker.service';
 
 interface ZombieEntry {
   id: number;
@@ -19,11 +20,13 @@ interface ZombieEntry {
   selector: 'app-leak-demo',
   standalone: true,
   imports: [CommonModule, FormsModule, LeakyChildComponent],
+  providers: [LeakTrackerService],
   templateUrl: './leak-demo.component.html',
   styleUrl: './leak-demo.component.scss',
 })
 export class LeakDemoComponent {
-  // ① Strategy selection
+
+  // Strategy selection
   selectedStrategy: CleanupStrategy = 'none';
   strategies: { value: CleanupStrategy; label: string; icon: string }[] = [
     { value: 'none', label: 'No cleanup', icon: '💀' },
@@ -32,15 +35,29 @@ export class LeakDemoComponent {
     { value: 'async', label: 'async pipe', icon: '✅' },
   ];
 
-  // ② Mount state
+  // Mount state
   isMounted = false;
 
-  // ③ Tracking leaks
+  // Tracking leaks
   activeSubs = 0;
   zombieLog: ZombieEntry[] = [];
   mountCount = 0;
 
-  // ④ Derived state
+  constructor(private leakTracker: LeakTrackerService, private cdr: ChangeDetectorRef) {
+    // Subscribe to zombie reports from the (now or future) child
+    this.leakTracker.zombieTick$$.subscribe((tick) => {
+      console.log('📥 PARENT received zombie tick:', tick);
+      this.zombieLog.unshift({
+        id: this.zombieLog.length + 1,
+        tick,
+        timestamp: new Date(),
+        instance: this.mountCount,
+      });
+      this.cdr.detectChanges(); // force re-render (zombie fires outside CD)
+    });
+  }
+
+  // Derived state
   get isLeaking(): boolean {
     return !this.isMounted && this.activeSubs > 0;
   }
@@ -80,18 +97,9 @@ export class LeakDemoComponent {
     // 'none' → activeSubs stays elevated → leak indicator turns red
   }
 
-  /** Receive zombie ticks from the dead child */
-  onZombieTick(tick: number): void {
-    this.zombieLog.push({
-      id: this.zombieLog.length + 1,
-      tick,
-      timestamp: new Date(),
-      instance: this.mountCount,
-    });
-  }
-
   /** Reset everything */
   onReset(): void {
+    this.leakTracker.killAll(); // actually stop all leaked subscriptions
     // Destroy first if mounted
     this.isMounted = false;
     this.activeSubs = 0;
