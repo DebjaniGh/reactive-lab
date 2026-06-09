@@ -46,7 +46,6 @@ export class LeakDemoComponent {
   constructor(private leakTracker: LeakTrackerService, private cdr: ChangeDetectorRef) {
     // Subscribe to zombie reports from the (now or future) child
     this.leakTracker.zombieTick$$.subscribe((tick) => {
-      console.log('📥 PARENT received zombie tick:', tick);
       this.zombieLog.unshift({
         id: this.zombieLog.length + 1,
         tick,
