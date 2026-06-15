@@ -31,7 +31,8 @@
         <button class="btn btn--counter" (click)="onCounter(5)">+5</button>
       </div>
     </div>
-        <!-- Panel 2: Mini Cart -->
+    
+    <!-- Panel 2: Mini Cart -->
     <div class="scan-demo__panel">
       <h3>🛒 Mini Cart</h3>
       <p class="scan-demo__panel-desc">
@@ -64,6 +65,27 @@
             {{ item.icon }} ${{ item.price }}
           </button>
         }
+      </div>
+    </div>
+
+        <!-- Panel 3: Traffic Light -->
+    <div class="scan-demo__panel">
+      <h3>🔄 Traffic Light</h3>
+      <p class="scan-demo__panel-desc">
+        <code>scan(reducer, initialState)</code>
+      </p>
+
+      <div
+        class="scan-demo__traffic-light"
+        [style.background]="trafficState.color"
+      >
+        {{ trafficState.label }}
+      </div>
+
+      <div class="scan-demo__traffic-buttons">
+        <button class="btn btn--go" (click)="onTraffic('GO')">🟢 GO</button>
+        <button class="btn btn--slow" (click)="onTraffic('SLOW')">🟡 SLOW</button>
+        <button class="btn btn--stop" (click)="onTraffic('STOP')">🔴 STOP</button>
       </div>
     </div>
   </div>

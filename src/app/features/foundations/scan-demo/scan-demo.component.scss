@@ -7,6 +7,9 @@ $color-muted: #666;
 $color-border: #ddd;
 $radius: 8px;
 $color-cart: #f59e0b;
+$color-traffic-go: #22c55e;
+$color-traffic-slow: #eab308;
+$color-traffic-stop: #ef4444;
 
 // ── Block ──
 .scan-demo {
@@ -42,11 +45,11 @@ $color-cart: #f59e0b;
 // ── Panels Grid ──
 .scan-demo__panels {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);   // 🆕 CHANGE from 1fr to repeat(2, 1fr)
+  grid-template-columns: repeat(3, 1fr);   // 🆕 CHANGE from repeat(2, 1fr)
   gap: 1rem;
   margin-bottom: 1.5rem;
 
-  @media (max-width: 600px) {
+  @media (max-width: 700px) {               // 🆕 CHANGE breakpoint from 600px
     grid-template-columns: 1fr;
   }
 }
@@ -140,6 +143,21 @@ $color-cart: #f59e0b;
     background: rgba($color-cart, 0.2);
     color: $color-cart;
   }
+
+  &--go {
+  background: rgba($color-traffic-go, 0.2);
+  color: $color-traffic-go;
+}
+
+&--slow {
+  background: rgba($color-traffic-slow, 0.2);
+  color: $color-traffic-slow;
+}
+
+&--stop {
+  background: rgba($color-traffic-stop, 0.2);
+  color: $color-traffic-stop;
+}
 }
 
 // ── Log ──
@@ -248,4 +266,25 @@ $color-cart: #f59e0b;
   flex-wrap: wrap;
   gap: 0.4rem;
   justify-content: center;
+}
+
+// ── Traffic Light ──
+.scan-demo__traffic-light {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s ease;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+}
+
+.scan-demo__traffic-buttons {
+  display: flex;
+  gap: 0.35rem;
 }

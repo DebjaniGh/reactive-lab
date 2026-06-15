@@ -27,6 +27,14 @@ interface CartState {
   count: number;
 }
 
+/** Traffic light state with label and color. */
+interface TrafficState {
+  label: string;
+  color: string;
+}
+
+type TrafficAction = 'GO' | 'SLOW' | 'STOP';
+
 // ── Reducer (pure function) ──
 
 /**
@@ -54,7 +62,22 @@ function cartReducer(state: CartState, item: CartItem): CartState {
   };
 }
 
-// Demo menu items used by the Mini Cart panel
+/** 
+ * Transforms traffic light actions into display state.
+ * @param state Current traffic state.
+ * @param action Incoming action to process.
+ * @returns New traffic state with updated label and color.
+ */
+function trafficReducer(state: TrafficState, action: TrafficAction): TrafficState {
+  switch (action) {
+    case 'GO':   return { label: '🟢 GO',   color: 'green' };
+    case 'SLOW': return { label: '🟡 SLOW', color: 'yellow' };
+    case 'STOP': return { label: '🔴 STOP', color: 'red' };
+    default:     return state;
+  }
+}
+
+/** Demo menu items used by the Mini Cart panel */
 const MENU: CartItem[] = [
   { name: 'Pizza',  icon: '🍕', price: 8  },
   { name: 'Burger', icon: '🍔', price: 6  },
@@ -75,6 +98,8 @@ export class ScanDemoComponent implements OnDestroy {
   private counter$$ = new Subject<number>();
   // Entry point for cart item events
   private cart$$ = new Subject<CartItem>();
+  // Entry point for traffic light actions
+  private traffic$$ = new Subject<TrafficAction>();
 
   // Subscription tracker
   private subs: Subscription[] = [];
@@ -84,13 +109,15 @@ export class ScanDemoComponent implements OnDestroy {
   log: LogEntry[] = [];
   cartState: CartState = { items: [], total: 0, count: 0 };
   menu = MENU;
-
+  trafficState: TrafficState = { label: '🟡 STOP', color: 'red' };
+  
   // Log counter
   private logCounter = 0;
 
   constructor() {
     this.setupCounter();
     this.setupCart();
+    this.setupTraffic();
   }
 
   // ── Counter Pipeline ──
@@ -134,6 +161,22 @@ export class ScanDemoComponent implements OnDestroy {
     this.subs.push(sub);
   }
 
+  /** Builds the traffic light state stream with scan(trafficReducer) and logs the latest state change. */
+  private setupTraffic(): void {
+  const sub = this.traffic$$
+    .pipe(
+      scan(trafficReducer, { label: '🔴 STOP', color: 'red' }),
+      tap((state) => {
+        this.addLog('🔄', `→ ${state.label}`);
+      })
+    )
+    .subscribe((state) => {
+      this.trafficState = state;
+    });
+
+  this.subs.push(sub);
+}
+
   // ── Template Actions ──
 
   /** Emits a counter delta into the accumulation pipeline. */
@@ -150,6 +193,11 @@ export class ScanDemoComponent implements OnDestroy {
   /** Pushes a selected menu item into the cart accumulation pipeline. */
   onAddToCart(item: CartItem): void {
     this.cart$$.next(item);
+  }
+
+  /** Emits a traffic light action into the accumulation pipeline. */
+  onTraffic(action: TrafficAction): void {
+    this.traffic$$.next(action);
   }
 
   // ── Helpers ──
@@ -169,5 +217,6 @@ export class ScanDemoComponent implements OnDestroy {
     this.subs.forEach((s) => s.unsubscribe());
     this.counter$$.complete();
     this.cart$$.complete();
+    this.traffic$$.complete();
   }
 }
