@@ -18,10 +18,12 @@
         <code>scan((acc, val) =&gt; acc + val, 0)</code>
       </p>
 
+      <!-- Displays the accumulated counter value from the counter scan() pipeline -->
       <div class="scan-demo__counter-display">
         {{ counterValue }}
       </div>
 
+      <!-- Buttons emit deltas into the counter Subject -->
       <div class="scan-demo__counter-buttons">
         <button class="btn btn--counter" (click)="onCounter(-5)">-5</button>
         <button class="btn btn--counter" (click)="onCounter(-1)">-1</button>
@@ -36,11 +38,13 @@
         <code>scan((state, item) =&gt; newState, initial)</code>
       </p>
 
+      <!-- Derived values from the cart scan(): item count and total price -->
       <div class="scan-demo__cart-stats">
         <span>Items: <strong>{{ cartState.count }}</strong></span>
         <span>Total: <strong>${{ cartState.total }}</strong></span>
       </div>
 
+      <!-- Renders item icons in the cart; shows "Empty cart" when no items -->
       <div class="scan-demo__cart-items">
         @for (item of cartState.items; track $index) {
           <span class="scan-demo__cart-item">{{ item.icon }}</span>
@@ -50,6 +54,7 @@
         }
       </div>
 
+      <!-- Menu of items; clicking pushes the item into the cart stream -->
       <div class="scan-demo__cart-buttons">
         @for (item of menu; track item.name) {
           <button
@@ -70,12 +75,14 @@
       <button class="btn btn--clear" (click)="onClearLog()">🗑️ Clear</button>
     </div>
 
+    <!-- Angular control flow: show empty state or render the log list -->
     @if (log.length === 0) {
       <p class="scan-demo__empty">
         Interact with the panels above to see scan() in action.
       </p>
     } @else {
       <ul class="scan-demo__log-list">
+        <!-- Iterate over log entries (latest first due to unshift in TS) -->
         @for (entry of log; track entry.id) {
           <li>
             <span class="scan-demo__log-panel">{{ entry.panel }}</span>

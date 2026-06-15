@@ -6,18 +6,21 @@ import { Subject, Subscription, scan, tap } from 'rxjs';
 
 // ── Types ──
 
+/** Represents a single log entry displayed in the Scan Pipeline Log. */
 interface LogEntry {
   id: number;
   panel: string;
   message: string;
 }
 
+/** Menu or cart item with display icon and unit price. */
 interface CartItem {
   name: string;
   icon: string;
   price: number;
 }
 
+/** Accumulated cart state produced by scan(cartReducer, initialState). */
 interface CartState {
   items: CartItem[];
   total: number;
@@ -26,10 +29,22 @@ interface CartState {
 
 // ── Reducer (pure function) ──
 
+/**
+ * Accumulates a numeric counter by simple addition.
+ * @param acc Current accumulated value.
+ * @param val Incoming delta to apply to the accumulator.
+ * @returns The new accumulated value.
+ */
 function counterReducer(acc: number, val: number): number {
   return acc + val;
 }
 
+/**
+ * Adds an item to the cart and derives aggregate fields.
+ * @param state Current cart state.
+ * @param item Item to add.
+ * @returns New cart state with updated items, total, and count.
+ */
 function cartReducer(state: CartState, item: CartItem): CartState {
   const items = [...state.items, item];
   return {
@@ -39,6 +54,7 @@ function cartReducer(state: CartState, item: CartItem): CartState {
   };
 }
 
+// Demo menu items used by the Mini Cart panel
 const MENU: CartItem[] = [
   { name: 'Pizza',  icon: '🍕', price: 8  },
   { name: 'Burger', icon: '🍔', price: 6  },
@@ -53,9 +69,11 @@ const MENU: CartItem[] = [
   templateUrl: './scan-demo.component.html',
   styleUrl: './scan-demo.component.scss',
 })
+/** Demo component showcasing RxJS scan() with a counter and a mini cart, including a live log. */
 export class ScanDemoComponent implements OnDestroy {
   // The Subject — entry point for counter events
   private counter$$ = new Subject<number>();
+  // Entry point for cart item events
   private cart$$ = new Subject<CartItem>();
 
   // Subscription tracker
@@ -76,6 +94,7 @@ export class ScanDemoComponent implements OnDestroy {
   }
 
   // ── Counter Pipeline ──
+  /** Builds the counter stream using scan(acc + val) and logs each accumulation. */
   private setupCounter(): void {
     const sub = this.counter$$
       .pipe(
@@ -95,6 +114,7 @@ export class ScanDemoComponent implements OnDestroy {
     this.subs.push(sub);
   }
 
+  /** Builds the cart state stream with scan(cartReducer) and logs the latest addition. */
   private setupCart(): void {
   const sub = this.cart$$
     .pipe(
@@ -116,21 +136,25 @@ export class ScanDemoComponent implements OnDestroy {
 
   // ── Template Actions ──
 
+  /** Emits a counter delta into the accumulation pipeline. */
   onCounter(value: number): void {
     this.counter$$.next(value);
   }
 
+  /** Clears the visual log and resets its incrementing id counter. */
   onClearLog(): void {
     this.log = [];
     this.logCounter = 0;
   }
 
+  /** Pushes a selected menu item into the cart accumulation pipeline. */
   onAddToCart(item: CartItem): void {
     this.cart$$.next(item);
   }
 
   // ── Helpers ──
 
+  /** Prepends a formatted entry to the in-memory log shown in the template. */
   private addLog(panel: string, message: string): void {
     this.logCounter++;
     this.log.unshift({
@@ -140,6 +164,7 @@ export class ScanDemoComponent implements OnDestroy {
     });
   }
 
+  /** Ensures all subscriptions are disposed and Subjects are completed to avoid leaks. */
   ngOnDestroy(): void {
     this.subs.forEach((s) => s.unsubscribe());
     this.counter$$.complete();
