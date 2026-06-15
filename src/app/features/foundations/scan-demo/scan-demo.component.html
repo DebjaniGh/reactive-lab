@@ -29,6 +29,38 @@
         <button class="btn btn--counter" (click)="onCounter(5)">+5</button>
       </div>
     </div>
+        <!-- Panel 2: Mini Cart -->
+    <div class="scan-demo__panel">
+      <h3>🛒 Mini Cart</h3>
+      <p class="scan-demo__panel-desc">
+        <code>scan((state, item) =&gt; newState, initial)</code>
+      </p>
+
+      <div class="scan-demo__cart-stats">
+        <span>Items: <strong>{{ cartState.count }}</strong></span>
+        <span>Total: <strong>${{ cartState.total }}</strong></span>
+      </div>
+
+      <div class="scan-demo__cart-items">
+        @for (item of cartState.items; track $index) {
+          <span class="scan-demo__cart-item">{{ item.icon }}</span>
+        }
+        @if (cartState.items.length === 0) {
+          <span class="scan-demo__empty-inline">Empty cart</span>
+        }
+      </div>
+
+      <div class="scan-demo__cart-buttons">
+        @for (item of menu; track item.name) {
+          <button
+            class="btn btn--cart"
+            (click)="onAddToCart(item)"
+          >
+            {{ item.icon }} ${{ item.price }}
+          </button>
+        }
+      </div>
+    </div>
   </div>
 
   <!-- ③ Scan Pipeline Log -->
@@ -40,7 +72,7 @@
 
     @if (log.length === 0) {
       <p class="scan-demo__empty">
-        Click the counter buttons to see scan() in action.
+        Interact with the panels above to see scan() in action.
       </p>
     } @else {
       <ul class="scan-demo__log-list">

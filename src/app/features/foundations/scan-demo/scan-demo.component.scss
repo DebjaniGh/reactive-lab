@@ -6,6 +6,7 @@ $color-text: #212121;
 $color-muted: #666;
 $color-border: #ddd;
 $radius: 8px;
+$color-cart: #f59e0b;
 
 // ── Block ──
 .scan-demo {
@@ -41,9 +42,13 @@ $radius: 8px;
 // ── Panels Grid ──
 .scan-demo__panels {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);   // 🆕 CHANGE from 1fr to repeat(2, 1fr)
   gap: 1rem;
   margin-bottom: 1.5rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .scan-demo__panel {
@@ -130,6 +135,11 @@ $radius: 8px;
     font-size: 0.75rem;
     padding: 0.3rem 0.6rem;
   }
+
+  &--cart {
+    background: rgba($color-cart, 0.2);
+    color: $color-cart;
+  }
 }
 
 // ── Log ──
@@ -189,4 +199,53 @@ $radius: 8px;
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// ── Cart ──
+.scan-demo__cart-stats {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: $color-muted;
+
+  strong {
+    color: $color-cart;
+  }
+}
+
+.scan-demo__cart-items {
+  min-height: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  justify-content: center;
+}
+
+.scan-demo__cart-item {
+  font-size: 1.3rem;
+  animation: popIn 0.2s ease;
+}
+
+.scan-demo__empty-inline {
+  color: $color-muted;
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+.scan-demo__cart-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
 }
