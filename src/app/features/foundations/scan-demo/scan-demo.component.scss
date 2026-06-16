@@ -10,6 +10,7 @@ $color-cart: #f59e0b;
 $color-traffic-go: #22c55e;
 $color-traffic-slow: #eab308;
 $color-traffic-stop: #ef4444;
+$color-surface-alt: #262639;
 
 // ── Block ──
 .scan-demo {
@@ -287,4 +288,73 @@ $color-traffic-stop: #ef4444;
 .scan-demo__traffic-buttons {
   display: flex;
   gap: 0.35rem;
+}
+
+// ── Explanation Section ──
+.scan-demo__explanation {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: #1a1a2e;
+  border: 1px solid #2d2d44;
+  border-radius: $radius;
+  border-left: 3px solid $color-counter;
+}
+
+.scan-demo__explain-text {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #f1f5f9;
+
+  code {
+    background: #2d3748;
+    color: #90cdf4;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  strong {
+    color: #ffffff;
+  }
+}
+
+.scan-demo__examples {
+  h4 {
+    margin: 0 0 0.75rem;
+    font-size: 0.95rem;
+    color: #cbd5e1;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      padding: 0.6rem 0;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+      border-bottom: 1px solid #2d2d44;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      strong {
+        color: #fbbf24;
+      }
+
+      code {
+        background: #2d3748;
+        color: #90cdf4;
+        padding: 0.1rem 0.4rem;
+        border-radius: 3px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+    }
+  }
 }

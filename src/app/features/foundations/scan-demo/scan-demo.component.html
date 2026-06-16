@@ -10,6 +10,37 @@
     </p>
   </header>
 
+  <!-- Explanation Section -->
+  <div class="scan-demo__explanation">
+    <p class="scan-demo__explain-text">
+      <code>scan()</code> works like a scoreboard — it receives each new value,
+      combines it with the previous result, and emits the running total.
+      Unlike <code>reduce()</code>, which waits until the stream ends,
+      <code>scan()</code> emits after <strong>every single value</strong>.
+    </p>
+
+    <div class="scan-demo__examples">
+      <h4>Real-world examples:</h4>
+      <ul>
+        <li>
+          <strong>🔢 Notification Badge</strong> — Each new notification increments
+          a counter. <code>scan()</code> keeps the running count so the badge
+          always shows the current total.
+        </li>
+        <li>
+          <strong>🛒 Shopping Cart</strong> — Each "Add to Cart" click appends an
+          item. <code>scan()</code> accumulates the items array and recomputes the
+          total price after every addition.
+        </li>
+        <li>
+          <strong>🔄 App State (NgRx)</strong> — Each user action dispatches an event.
+          <code>scan()</code> applies a reducer function to produce the new state.
+          This is literally the engine behind NgRx and Redux.
+        </li>
+      </ul>
+    </div>
+  </div>
+
   <!-- ② Counter Panel -->
   <div class="scan-demo__panels">
     <div class="scan-demo__panel">
