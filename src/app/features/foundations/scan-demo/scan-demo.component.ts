@@ -193,7 +193,7 @@ export class ScanDemoComponent implements OnDestroy {
   /** Pushes a selected menu item into the cart accumulation pipeline. */
   onAddToCart(item: CartItem): void {
     this.cart$$.next(item);
-  }
+  } 
 
   /** Emits a traffic light action into the accumulation pipeline. */
   onTraffic(action: TrafficAction): void {
