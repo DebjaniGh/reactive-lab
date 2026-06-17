@@ -1,0 +1,127 @@
+<!-- debounce-demo.component.html -->
+
+<section class="debounce-demo">
+
+  <!-- ① Header -->
+  <header class="debounce-demo__header">
+    <h2>⏱️ debounceTime() + distinctUntilChanged()</h2>
+    <p class="debounce-demo__subtitle">
+      Type in the search box. Watch how each stage reduces unnecessary emissions.
+    </p>
+  </header>
+
+  <!-- ② Explanation -->
+  <div class="debounce-demo__explanation">
+    <p>
+      <code>debounceTime({{ debounceMs }})</code> waits for
+      <strong>{{ debounceMs }}ms of silence</strong> before emitting — like a
+      patient secretary who only delivers a message after you stop talking.
+      <code>distinctUntilChanged()</code> blocks duplicate values — if the
+      same query arrives twice in a row, it's ignored.
+    </p>
+  </div>
+
+  <!-- ③ Search Input -->
+  <div class="debounce-demo__input-area">
+    <label class="debounce-demo__label">
+      🔍 Type to search:
+      <input
+        #searchInput
+        type="text"
+        class="debounce-demo__input"
+        placeholder="Try typing 'angular'..."
+        autocomplete="off"
+      />
+    </label>
+    <button class="btn btn--clear" (click)="onClear()">🗑️ Clear All</button>
+  </div>
+
+  <!-- ④ Three Stage Columns -->
+  <div class="debounce-demo__stages">
+
+    <!-- Stage 1: Raw -->
+    <div class="debounce-demo__stage">
+      <div class="debounce-demo__stage-header debounce-demo__stage-header--raw">
+        <h3>⌨️ Raw Keystrokes</h3>
+        <span class="debounce-demo__count">{{ rawCount }}</span>
+      </div>
+      <div class="debounce-demo__stage-list">
+        @if (rawEntries.length === 0) {
+          <p class="debounce-demo__empty">Start typing...</p>
+        } @else {
+          @for (entry of rawEntries; track entry.id) {
+            <div class="debounce-demo__entry debounce-demo__entry--raw">
+              <span class="debounce-demo__entry-value">"{{ entry.value }}"</span>
+              <span class="debounce-demo__entry-time">
+                {{ entry.timestamp | date:'HH:mm:ss.SSS' }}
+              </span>
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Stage 2: After Debounce -->
+    <div class="debounce-demo__stage">
+      <div class="debounce-demo__stage-header debounce-demo__stage-header--debounced">
+        <h3>⏱️ After Debounce</h3>
+        <span class="debounce-demo__count">{{ debouncedCount }}</span>
+      </div>
+      <div class="debounce-demo__stage-list">
+        @if (debouncedEntries.length === 0) {
+          <p class="debounce-demo__empty">Waiting for silence...</p>
+        } @else {
+          @for (entry of debouncedEntries; track entry.id) {
+            <div class="debounce-demo__entry debounce-demo__entry--debounced">
+              <span class="debounce-demo__entry-value">"{{ entry.value }}"</span>
+              <span class="debounce-demo__entry-time">
+                {{ entry.timestamp | date:'HH:mm:ss.SSS' }}
+              </span>
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Stage 3: After Distinct -->
+    <div class="debounce-demo__stage">
+      <div class="debounce-demo__stage-header debounce-demo__stage-header--distinct">
+        <h3>✅ After Distinct</h3>
+        <span class="debounce-demo__count">{{ distinctCount }}</span>
+      </div>
+      <div class="debounce-demo__stage-list">
+        @if (distinctEntries.length === 0) {
+          <p class="debounce-demo__empty">Waiting for new values...</p>
+        } @else {
+          @for (entry of distinctEntries; track entry.id) {
+            <div class="debounce-demo__entry debounce-demo__entry--distinct">
+              <span class="debounce-demo__entry-value">"{{ entry.value }}"</span>
+              <span class="debounce-demo__entry-time">
+                {{ entry.timestamp | date:'HH:mm:ss.SSS' }}
+              </span>
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ⑤ Pipeline Log -->
+  <div class="debounce-demo__log">
+    <h3>📋 Pipeline Log</h3>
+    @if (log.length === 0) {
+      <p class="debounce-demo__empty">Type in the search box to see the pipeline in action.</p>
+    } @else {
+      <ul class="debounce-demo__log-list">
+        @for (entry of log; track entry.id) {
+          <li>
+            <span class="debounce-demo__log-stage">{{ entry.stage }}</span>
+            {{ entry.message }}
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+</section>

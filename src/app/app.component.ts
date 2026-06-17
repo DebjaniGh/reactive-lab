@@ -36,5 +36,10 @@ export class AppComponent {
       label: 'Scan Demo',
       icon: 'inventory',
     },
+    {
+      path: 'debounce-demo',
+      label: 'Debounce Demo',
+      icon: 'timer',
+    },
   ];
 }

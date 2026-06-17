@@ -41,4 +41,11 @@ export const routes: Routes = [
         (m) => m.ScanDemoComponent,
       ),
   },
+  {
+    path: 'debounce-demo',
+    loadComponent: () =>
+      import('./features/debounce-demo/debounce-demo.component').then(
+        (m) => m.DebounceDemoComponent,
+      ),
+  },
 ];

@@ -1,0 +1,264 @@
+// debounce-demo.component.scss
+
+$color-raw: #ef4444;
+$color-debounced: #f59e0b;
+$color-distinct: #22c55e;
+$color-surface: #1e1e2e;
+$color-surface-alt: #262639;
+$color-text: #e2e8f0;
+$color-muted: #94a3b8;
+$color-border: #334155;
+$radius: 8px;
+
+.debounce-demo {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: $color-surface;
+  border-radius: $radius;
+  color: $color-text;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+// ── Header ──
+.debounce-demo__header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+
+  h2 {
+    margin: 0 0 0.25rem;
+    font-size: 1.5rem;
+  }
+}
+
+.debounce-demo__subtitle {
+  margin: 0;
+  color: $color-muted;
+  font-size: 0.9rem;
+}
+
+// ── Explanation ──
+.debounce-demo__explanation {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: #1a1a2e;
+  border: 1px solid #2d2d44;
+  border-radius: $radius;
+  border-left: 3px solid $color-debounced;
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #f1f5f9;
+
+    code {
+      background: #2d3748;
+      color: #90cdf4;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    strong {
+      color: #fff;
+    }
+  }
+}
+
+// ── Input Area ──
+.debounce-demo__input-area {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.debounce-demo__label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+  min-width: 200px;
+  font-size: 0.9rem;
+  color: $color-muted;
+}
+
+.debounce-demo__input {
+  padding: 0.7rem 1rem;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+  background: $color-surface-alt;
+  color: $color-text;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    border-color: $color-debounced;
+  }
+
+  &::placeholder {
+    color: darken($color-muted, 10%);
+  }
+}
+
+// ── Three Stage Columns ──
+.debounce-demo__stages {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.debounce-demo__stage {
+  background: $color-surface-alt;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+  overflow: hidden;
+}
+
+.debounce-demo__stage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+
+  h3 {
+    margin: 0;
+    font-size: 0.85rem;
+  }
+
+  &--raw {
+    background: rgba($color-raw, 0.15);
+    border-bottom: 2px solid $color-raw;
+  }
+
+  &--debounced {
+    background: rgba($color-debounced, 0.15);
+    border-bottom: 2px solid $color-debounced;
+  }
+
+  &--distinct {
+    background: rgba($color-distinct, 0.15);
+    border-bottom: 2px solid $color-distinct;
+  }
+}
+
+.debounce-demo__count {
+  font-weight: 700;
+  font-size: 1.1rem;
+  font-family: 'Fira Code', 'Consolas', monospace;
+}
+
+.debounce-demo__stage-list {
+  padding: 0.5rem 0.75rem;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.debounce-demo__entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba($color-border, 0.5);
+  font-size: 0.8rem;
+  animation: fadeIn 0.2s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &--raw .debounce-demo__entry-value { color: $color-raw; }
+  &--debounced .debounce-demo__entry-value { color: $color-debounced; }
+  &--distinct .debounce-demo__entry-value { color: $color-distinct; }
+}
+
+.debounce-demo__entry-value {
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-weight: 600;
+}
+
+.debounce-demo__entry-time {
+  font-size: 0.7rem;
+  color: $color-muted;
+}
+
+// ── Buttons ──
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: $radius;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &--clear {
+    background: $color-border;
+    color: $color-text;
+  }
+}
+
+// ── Pipeline Log ──
+.debounce-demo__log {
+  h3 {
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+  }
+}
+
+.debounce-demo__log-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+
+  li {
+    padding: 0.35rem 0;
+    border-bottom: 1px solid $color-border;
+    font-size: 0.8rem;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    animation: fadeIn 0.2s ease;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.debounce-demo__log-stage {
+  margin-right: 0.4rem;
+}
+
+// ── Empty state ──
+.debounce-demo__empty {
+  color: $color-muted;
+  font-style: italic;
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+// ── Animation ──
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
