@@ -1,1 +1,124 @@
-<p>swmap-demo works!</p>
+<!-- switchmap-demo.component.html -->
+
+<section class="switchmap-demo">
+
+  <!-- ① Header -->
+  <header class="switchmap-demo__header">
+    <h2>🔀 switchMap() — The Channel Switcher</h2>
+    <p class="switchmap-demo__subtitle">
+      Type a search query. Watch how switchMap() cancels outdated requests
+      and only delivers the latest results.
+    </p>
+  </header>
+
+  <!-- ② Explanation -->
+  <div class="switchmap-demo__explanation">
+    <p>
+      <code>switchMap()</code> subscribes to a new inner Observable on each emission
+      and <strong>cancels the previous one</strong>. Combined with
+      <code>debounceTime()</code> and <code>distinctUntilChanged()</code>,
+      it forms the classic search typeahead pattern used in every Angular app.
+    </p>
+  </div>
+
+  <!-- ③ Search Input -->
+  <div class="switchmap-demo__input-area">
+    <label class="switchmap-demo__label">
+      🔍 Search:
+      <input
+        #searchInput
+        type="text"
+        class="switchmap-demo__input"
+        placeholder="Try 'angular', 'rxjs', 'vue', 'ngrx'..."
+        autocomplete="off"
+      />
+    </label>
+    <button class="btn btn--clear" (click)="onClear()">🗑️ Clear All</button>
+  </div>
+
+  <!-- ④ Stats Bar -->
+  <div class="switchmap-demo__stats">
+    <span class="switchmap-demo__stat">
+      Total: <strong>{{ totalRequests }}</strong>
+    </span>
+    <span class="switchmap-demo__stat switchmap-demo__stat--cancelled">
+      ❌ Cancelled: <strong>{{ cancelledRequests }}</strong>
+    </span>
+    <span class="switchmap-demo__stat switchmap-demo__stat--completed">
+      ✅ Completed: <strong>{{ completedRequests }}</strong>
+    </span>
+  </div>
+
+  <!-- ⑤ Main Content Grid -->
+  <div class="switchmap-demo__grid">
+
+    <!-- Left: Request History -->
+    <div class="switchmap-demo__requests">
+      <h3>🔄 Request History</h3>
+      @if (requests.length === 0) {
+        <p class="switchmap-demo__empty">No requests yet. Start typing...</p>
+      } @else {
+        @for (req of requests; track req.id) {
+          <div
+            class="switchmap-demo__request"
+            [class.switchmap-demo__request--loading]="req.status === 'loading'"
+            [class.switchmap-demo__request--completed]="req.status === 'completed'"
+            [class.switchmap-demo__request--cancelled]="req.status === 'cancelled'"
+          >
+            <div class="switchmap-demo__request-header">
+              <span class="switchmap-demo__request-query">"{{ req.query }}"</span>
+              @if (req.status === 'loading') {
+                <span class="switchmap-demo__badge switchmap-demo__badge--loading">⏳ Loading</span>
+              } @else if (req.status === 'completed') {
+                <span class="switchmap-demo__badge switchmap-demo__badge--completed">✅ {{ req.duration }}ms</span>
+              } @else {
+                <span class="switchmap-demo__badge switchmap-demo__badge--cancelled">❌ Cancelled</span>
+              }
+            </div>
+            <span class="switchmap-demo__request-time">
+              {{ req.timestamp | date:'HH:mm:ss.SSS' }}
+            </span>
+          </div>
+        }
+      }
+    </div>
+
+    <!-- Right: Search Results -->
+    <div class="switchmap-demo__results">
+      <h3>
+        📦 Results
+        @if (currentQuery) {
+          <span class="switchmap-demo__results-query">for "{{ currentQuery }}"</span>
+        }
+      </h3>
+      @if (results.length === 0) {
+        <p class="switchmap-demo__empty">Results will appear here...</p>
+      } @else {
+        <ul class="switchmap-demo__results-list">
+          @for (item of results; track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      }
+    </div>
+
+  </div>
+
+  <!-- ⑥ Pipeline Log -->
+  <div class="switchmap-demo__log">
+    <h3>📋 Pipeline Log</h3>
+    @if (log.length === 0) {
+      <p class="switchmap-demo__empty">Type in the search box to see the full pipeline.</p>
+    } @else {
+      <ul class="switchmap-demo__log-list">
+        @for (entry of log; track entry.id) {
+          <li>
+            <span class="switchmap-demo__log-stage">{{ entry.stage }}</span>
+            {{ entry.message }}
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+</section>

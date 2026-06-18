@@ -48,4 +48,11 @@ export const routes: Routes = [
         (m) => m.DebounceDemoComponent,
       ),
   },
+  {
+    path: 'swmap-demo',
+    loadComponent: () =>
+      import('./features/swmap-demo/swmap-demo.component').then(
+        (m) => m.SwmapDemoComponent,
+      ),
+  },
 ];

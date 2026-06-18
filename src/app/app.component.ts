@@ -41,5 +41,10 @@ export class AppComponent {
       label: 'Debounce Demo',
       icon: 'timer',
     },
+    {
+      path: 'swmap-demo',
+      label: 'SwitchMap Demo',
+      icon: 'switch_access',
+    },
   ];
 }
