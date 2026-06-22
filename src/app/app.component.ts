@@ -49,7 +49,12 @@ export class AppComponent {
     {
       path: 'flatten-demo',
       label: 'Flatten Demo',
-      icon: 'link',
-    }
+      icon: 'layers',
+    },
+    {
+      path: 'combine-demo',
+      label: 'Combination Operators Demo',
+      icon: 'merge',
+    },
   ];
 }

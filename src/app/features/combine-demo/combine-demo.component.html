@@ -1,0 +1,190 @@
+<div class="demo-wrapper">
+
+  <h1>🔗 RxJS Combination Operators — Side by Side</h1>
+
+  <!-- ── Source Controls ─────────────────────────────── -->
+  <section class="sources">
+    <h2>📡 Sources</h2>
+    <div class="source-row">
+
+      <!-- Source A -->
+      <div class="source-card source-a">
+        <h3>Source A</h3>
+        <button (click)="emitA()" class="btn emit">Emit A</button>
+        <button
+          (click)="completeA()"
+          class="btn complete"
+          [disabled]="forkACompleted">
+          {{ forkACompleted ? '✅ Completed' : 'Complete A (forkJoin)' }}
+        </button>
+      </div>
+
+      <!-- Source B -->
+      <div class="source-card source-b">
+        <h3>Source B</h3>
+        <button (click)="emitB()" class="btn emit">Emit B</button>
+        <button
+          (click)="completeB()"
+          class="btn complete"
+          [disabled]="forkBCompleted">
+          {{ forkBCompleted ? '✅ Completed' : 'Complete B (forkJoin)' }}
+        </button>
+      </div>
+
+      <!-- Source C -->
+      <div class="source-card source-c">
+        <h3>Source C</h3>
+        <button (click)="emitC()" class="btn emit">Emit C</button>
+        <button
+          (click)="completeC()"
+          class="btn complete"
+          [disabled]="forkCCompleted">
+          {{ forkCCompleted ? '✅ Completed' : 'Complete C (forkJoin)' }}
+        </button>
+      </div>
+
+    </div>
+
+    <div class="global-actions">
+      <button (click)="reset()" class="btn reset">🔄 Reset All</button>
+    </div>
+  </section>
+
+  <!-- ── Operator Panels ──────────────────────────────── -->
+  <section class="panels">
+
+    <!-- combineLatest -->
+    <div class="panel">
+      <div class="panel-header combine-latest-header">
+        <h3>combineLatest</h3>
+        <button (click)="clearLog('combineLatest')" class="btn clear">Clear</button>
+      </div>
+
+      <div class="explanation">
+        Emits the <strong>latest value from ALL</strong> sources
+        whenever <em>any</em> source emits.
+        Requires at least one emission from each source.
+      </div>
+
+      <div class="log-box" *ngIf="combineLatestLog.length; else noEmit">
+        <div
+          class="log-entry"
+          *ngFor="let entry of combineLatestLog">
+          <span class="timestamp">{{ entry.timestamp }}</span>
+          <span class="value">{{ entry.value }}</span>
+        </div>
+      </div>
+      <ng-template #noEmit>
+        <div class="empty-state">
+          Emit from all three sources to see output…
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- merge -->
+    <div class="panel">
+      <div class="panel-header merge-header">
+        <h3>merge</h3>
+        <button (click)="clearLog('merge')" class="btn clear">Clear</button>
+      </div>
+
+      <div class="explanation">
+        Passes <strong>every emission</strong> from any source
+        straight through — first come, first served.
+      </div>
+
+      <div class="log-box" *ngIf="mergeLog.length; else noEmitMerge">
+        <div
+          class="log-entry"
+          *ngFor="let entry of mergeLog">
+          <span class="timestamp">{{ entry.timestamp }}</span>
+          <span class="value">{{ entry.value }}</span>
+        </div>
+      </div>
+      <ng-template #noEmitMerge>
+        <div class="empty-state">Emit from any source…</div>
+      </ng-template>
+    </div>
+
+    <!-- forkJoin -->
+    <div class="panel">
+      <div class="panel-header fork-join-header">
+        <h3>forkJoin</h3>
+        <button (click)="clearLog('forkJoin')" class="btn clear">Clear</button>
+      </div>
+
+      <div class="explanation">
+        Waits for <strong>all sources to complete</strong>,
+        then emits only the <em>last value</em> of each.
+        Great for parallel HTTP calls.
+      </div>
+
+      <!-- completion status indicators -->
+      <div class="fork-status-row">
+        <span [class]="forkACompleted ? 'badge done' : 'badge pending'">
+          A {{ forkACompleted ? '✅' : '⏳' }}
+        </span>
+        <span [class]="forkBCompleted ? 'badge done' : 'badge pending'">
+          B {{ forkBCompleted ? '✅' : '⏳' }}
+        </span>
+        <span [class]="forkCCompleted ? 'badge done' : 'badge pending'">
+          C {{ forkCCompleted ? '✅' : '⏳' }}
+        </span>
+      </div>
+
+      <div class="fork-status-msg" [class.done]="forkJoinDone">
+        {{ forkJoinStatus }}
+      </div>
+
+      <div class="log-box" *ngIf="forkJoinLog.length">
+        <div
+          class="log-entry"
+          *ngFor="let entry of forkJoinLog">
+          <span class="timestamp">{{ entry.timestamp }}</span>
+          <span class="value">{{ entry.value }}</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── Quick Reference ──────────────────────────────── -->
+  <section class="reference">
+    <h2>📖 Quick Reference</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Operator</th>
+          <th>Emits when</th>
+          <th>Output shape</th>
+          <th>Needs completion?</th>
+          <th>Common use-case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>combineLatest</code></td>
+          <td>Any source emits (after all emitted once)</td>
+          <td>Array of latest values</td>
+          <td>No</td>
+          <td>Combining form-field streams</td>
+        </tr>
+        <tr>
+          <td><code>merge</code></td>
+          <td>Any source emits</td>
+          <td>Single value (pass-through)</td>
+          <td>No</td>
+          <td>Multiple event streams → one</td>
+        </tr>
+        <tr>
+          <td><code>forkJoin</code></td>
+          <td>All sources complete</td>
+          <td>Array / object of last values</td>
+          <td>Yes</td>
+          <td>Parallel HTTP requests</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>

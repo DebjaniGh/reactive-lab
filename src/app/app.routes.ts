@@ -62,4 +62,11 @@ export const routes: Routes = [
         (m) => m.FlattenDemoComponent,
       ),
   },
+  {
+    path: 'combine-demo',
+    loadComponent: () =>
+      import('./features/combine-demo/combine-demo.component').then(
+        (m) => m.CombinationOperatorsComponent,
+      ),
+  },
 ];
