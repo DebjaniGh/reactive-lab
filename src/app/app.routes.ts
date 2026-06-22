@@ -69,4 +69,11 @@ export const routes: Routes = [
         (m) => m.CombinationOperatorsComponent,
       ),
   },
+  {
+    path: 'error-demo',
+    loadComponent: () =>
+      import('./features/error-demo/error-demo.component').then(
+        (m) => m.ErrorDemoComponent,
+      ),
+  },
 ];

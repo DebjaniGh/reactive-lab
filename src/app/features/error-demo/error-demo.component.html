@@ -1,0 +1,210 @@
+<!-- error-demo.component.html -->
+
+<section class="error-demo">
+
+  <!-- ① Header -->
+  <header class="error-demo__header">
+    <h2>🛡️ Error Handling — catchError, retry, throwError</h2>
+    <p class="error-demo__subtitle">
+      Same error. Three different strategies. Watch which streams survive.
+    </p>
+  </header>
+
+  <!-- ② Explanation -->
+  <div class="error-demo__explanation">
+    <p>
+      In RxJS, an unhandled error <strong>terminates the stream permanently</strong>.
+      WHERE you place <code>catchError()</code> determines whether the stream
+      survives. Inside <code>switchMap()</code> — the stream lives.
+      Outside <code>switchMap()</code> — the stream dies.
+    </p>
+  </div>
+
+  <!-- ③ Controls -->
+  <div class="error-demo__controls">
+    <button class="btn btn--success" (click)="onSimulate('success')">
+      ✅ Simulate Success
+    </button>
+    <button class="btn btn--warn" (click)="onSimulate('error-404')">
+      ⚠️ Simulate 404
+    </button>
+    <button class="btn btn--error" (click)="onSimulate('error-500')">
+      ❌ Simulate 500
+    </button>
+    <button class="btn btn--reset" (click)="onReset()">
+      🔄 Reset All
+    </button>
+  </div>
+
+  <!-- ④ Three Panels -->
+  <div class="error-demo__panels">
+
+    <!-- Panel 1: No handler inside switchMap -->
+    <div
+      class="error-demo__panel"
+      [class.error-demo__panel--dead]="!panel1Alive"
+      [class.error-demo__panel--alive]="panel1Alive"
+    >
+      <div class="error-demo__panel-header">
+        <h3>1️⃣ catchError OUTSIDE</h3>
+        <span
+          class="error-demo__status-badge"
+          [class.error-demo__status-badge--alive]="panel1Alive"
+          [class.error-demo__status-badge--dead]="!panel1Alive"
+        >
+          {{ panel1Alive ? '🟢 Alive' : '💀 Dead' }}
+        </span>
+      </div>
+
+      <p class="error-demo__panel-desc">
+        <code>catchError()</code> is outside <code>switchMap()</code>.
+        First error kills the stream permanently.
+      </p>
+
+      <div class="error-demo__attempts">
+        Attempts: <strong>{{ panel1AttemptCount }}</strong>
+      </div>
+
+      @if (!panel1Alive) {
+        <div class="error-demo__dead-notice">
+          💀 Stream terminated. New emissions are ignored.
+          Click 🔄 Reset to restart.
+        </div>
+      }
+
+      <div class="error-demo__results">
+        @if (panel1Results.length === 0) {
+          <p class="error-demo__empty">No results yet</p>
+        } @else {
+          @for (result of panel1Results; track $index) {
+            <div
+              class="error-demo__result"
+              [class.error-demo__result--success]="result.status === 'success'"
+              [class.error-demo__result--error]="result.status === 'error'"
+              [class.error-demo__result--recovered]="result.status === 'recovered'"
+            >
+              @if (result.status === 'success') {
+                <span>✅ {{ result.data.join(', ') }}</span>
+              } @else {
+                <span>❌ Error — no data</span>
+              }
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Panel 2: catchError INSIDE switchMap -->
+    <div
+      class="error-demo__panel"
+      [class.error-demo__panel--alive]="panel2Alive"
+    >
+      <div class="error-demo__panel-header">
+        <h3>2️⃣ catchError INSIDE</h3>
+        <span class="error-demo__status-badge error-demo__status-badge--alive">
+          🟢 Always Alive
+        </span>
+      </div>
+
+      <p class="error-demo__panel-desc">
+        <code>catchError()</code> is inside <code>switchMap()</code>.
+        Errors are handled per-request. Stream never dies.
+      </p>
+
+      <div class="error-demo__attempts">
+        Attempts: <strong>{{ panel2AttemptCount }}</strong>
+      </div>
+
+      <div class="error-demo__results">
+        @if (panel2Results.length === 0) {
+          <p class="error-demo__empty">No results yet</p>
+        } @else {
+          @for (result of panel2Results; track $index) {
+            <div
+              class="error-demo__result"
+              [class.error-demo__result--success]="result.status === 'success'"
+              [class.error-demo__result--error]="result.status === 'error'"
+              [class.error-demo__result--recovered]="result.status === 'recovered'"
+            >
+              @if (result.status === 'success') {
+                <span>✅ {{ result.data.join(', ') }}</span>
+              } @else if (result.status === 'recovered') {
+                <span>🔄 Recovered: {{ result.data.join(', ') }}</span>
+              } @else {
+                <span>❌ Fatal error — empty response</span>
+              }
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Panel 3: retry(3) -->
+    <div
+      class="error-demo__panel"
+      [class.error-demo__panel--alive]="panel3Alive"
+    >
+      <div class="error-demo__panel-header">
+        <h3>3️⃣ retry(3) + catchError</h3>
+        <span class="error-demo__status-badge error-demo__status-badge--alive">
+          🟢 Always Alive
+        </span>
+      </div>
+
+      <p class="error-demo__panel-desc">
+        Automatically retries up to 3 times before giving up.
+        Then <code>catchError()</code> handles the final failure.
+      </p>
+
+      <div class="error-demo__attempts">
+        Attempts: <strong>{{ panel3AttemptCount }}</strong>
+        @if (panel3RetryCount > 0) {
+          <span class="error-demo__retry-badge">
+            🔄 {{ panel3RetryCount }} retries
+          </span>
+        }
+      </div>
+
+      <div class="error-demo__results">
+        @if (panel3Results.length === 0) {
+          <p class="error-demo__empty">No results yet</p>
+        } @else {
+          @for (result of panel3Results; track $index) {
+            <div
+              class="error-demo__result"
+              [class.error-demo__result--success]="result.status === 'success'"
+              [class.error-demo__result--error]="result.status === 'error'"
+            >
+              @if (result.status === 'success') {
+                <span>✅ {{ result.data.join(', ') }}</span>
+              } @else {
+                <span>❌ Failed after 3 retries</span>
+              }
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ⑤ Pipeline Log -->
+  <div class="error-demo__log">
+    <h3>📋 Pipeline Log</h3>
+    @if (log.length === 0) {
+      <p class="error-demo__empty">
+        Click a simulate button to see the pipeline in action.
+      </p>
+    } @else {
+      <ul class="error-demo__log-list">
+        @for (entry of log; track entry.id) {
+          <li [class]="'error-demo__log-entry error-demo__log-entry--' + entry.type">
+            <span class="error-demo__log-panel">{{ entry.panel }}</span>
+            {{ entry.message }}
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+</section>

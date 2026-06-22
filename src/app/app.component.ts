@@ -56,5 +56,10 @@ export class AppComponent {
       label: 'Combination Operators Demo',
       icon: 'merge',
     },
+    {
+      path: 'error-demo',
+      label: 'Error Handling Demo',
+      icon: 'error',
+    },
   ];
 }

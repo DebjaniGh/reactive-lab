@@ -1,0 +1,276 @@
+// error-demo.component.scss
+
+$color-success: #22c55e;
+$color-error: #ef4444;
+$color-warning: #f59e0b;
+$color-info: #3b82f6;
+$color-recovered: #8b5cf6;
+$color-surface: #1e1e2e;
+$color-surface-alt: #262639;
+$color-text: #e2e8f0;
+$color-muted: #94a3b8;
+$color-border: #334155;
+$radius: 8px;
+
+.error-demo {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: $color-surface;
+  border-radius: $radius;
+  color: $color-text;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+// ── Header ──
+.error-demo__header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+
+  h2 {
+    margin: 0 0 0.25rem;
+    font-size: 1.5rem;
+  }
+}
+
+.error-demo__subtitle {
+  margin: 0;
+  color: $color-muted;
+  font-size: 0.9rem;
+}
+
+// ── Explanation ──
+.error-demo__explanation {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: #1a1a2e;
+  border: 1px solid #2d2d44;
+  border-radius: $radius;
+  border-left: 3px solid $color-error;
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #f1f5f9;
+
+    code {
+      background: #2d3748;
+      color: #90cdf4;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    strong { color: #fff; }
+  }
+}
+
+// ── Controls ──
+.error-demo__controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: $radius;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+
+  &:active { transform: scale(0.95); }
+
+  &--success { background: $color-success;  color: #fff; }
+  &--warn    { background: $color-warning;  color: #1e1e2e; }
+  &--error   { background: $color-error;    color: #fff; }
+  &--reset   { background: $color-border;   color: $color-text; }
+}
+
+// ── Panels ──
+.error-demo__panels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 750px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.error-demo__panel {
+  background: $color-surface-alt;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  transition: border-color 0.3s ease;
+
+  &--alive {
+    border-top: 3px solid $color-success;
+  }
+
+  &--dead {
+    border-top: 3px solid $color-error;
+    opacity: 0.85;
+  }
+}
+
+.error-demo__panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h3 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-family: 'Fira Code', monospace;
+  }
+}
+
+.error-demo__status-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+
+  &--alive {
+    background: rgba($color-success, 0.2);
+    color: $color-success;
+  }
+
+  &--dead {
+    background: rgba($color-error, 0.2);
+    color: $color-error;
+  }
+}
+
+.error-demo__panel-desc {
+  font-size: 0.75rem;
+  color: $color-muted;
+  line-height: 1.5;
+  margin: 0;
+
+  code {
+    background: rgba($color-info, 0.15);
+    color: #90cdf4;
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    font-size: 0.72rem;
+  }
+}
+
+.error-demo__attempts {
+  font-size: 0.75rem;
+  color: $color-muted;
+
+  strong { color: $color-text; }
+}
+
+.error-demo__retry-badge {
+  margin-left: 0.5rem;
+  background: rgba($color-warning, 0.2);
+  color: $color-warning;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.7rem;
+}
+
+.error-demo__dead-notice {
+  background: rgba($color-error, 0.1);
+  border: 1px solid rgba($color-error, 0.3);
+  border-radius: 4px;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.75rem;
+  color: $color-error;
+}
+
+.error-demo__results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-height: 60px;
+}
+
+.error-demo__result {
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-family: 'Fira Code', monospace;
+  animation: fadeIn 0.2s ease;
+
+  &--success {
+    background: rgba($color-success, 0.1);
+    color: $color-success;
+    border: 1px solid rgba($color-success, 0.2);
+  }
+
+  &--error {
+    background: rgba($color-error, 0.1);
+    color: $color-error;
+    border: 1px solid rgba($color-error, 0.2);
+  }
+
+  &--recovered {
+    background: rgba($color-recovered, 0.1);
+    color: $color-recovered;
+    border: 1px solid rgba($color-recovered, 0.2);
+  }
+}
+
+// ── Pipeline Log ──
+.error-demo__log {
+  h3 {
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+  }
+}
+
+.error-demo__log-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.error-demo__log-entry {
+  padding: 0.35rem 0;
+  border-bottom: 1px solid $color-border;
+  font-size: 0.78rem;
+  font-family: 'Fira Code', monospace;
+  animation: fadeIn 0.2s ease;
+
+  &:last-child { border-bottom: none; }
+
+  &--success { color: $color-success; }
+  &--error   { color: $color-error; }
+  &--warning { color: $color-warning; }
+  &--info    { color: $color-muted; }
+}
+
+.error-demo__log-panel {
+  margin-right: 0.5rem;
+}
+
+// ── Empty state ──
+.error-demo__empty {
+  color: $color-muted;
+  font-style: italic;
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+// ── Animations ──
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
