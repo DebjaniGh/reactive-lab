@@ -1,0 +1,276 @@
+// flatten-demo.component.scss
+
+$color-switch: #8b5cf6;
+$color-merge: #3b82f6;
+$color-concat: #f59e0b;
+$color-exhaust: #ef4444;
+$color-completed: #22c55e;
+$color-cancelled: #ef4444;
+$color-ignored: #94a3b8;
+$color-loading: #f59e0b;
+$color-surface: #1e1e2e;
+$color-surface-alt: #262639;
+$color-text: #e2e8f0;
+$color-muted: #94a3b8;
+$color-border: #334155;
+$radius: 8px;
+
+.flatten-demo {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: $color-surface;
+  border-radius: $radius;
+  color: $color-text;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+// ── Header ──
+.flatten-demo__header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+
+  h2 {
+    margin: 0 0 0.25rem;
+    font-size: 1.5rem;
+  }
+}
+
+.flatten-demo__subtitle {
+  margin: 0;
+  color: $color-muted;
+  font-size: 0.9rem;
+}
+
+// ── Explanation ──
+.flatten-demo__explanation {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: #1a1a2e;
+  border: 1px solid #2d2d44;
+  border-radius: $radius;
+  border-left: 3px solid $color-switch;
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #f1f5f9;
+
+    strong { color: #fff; }
+  }
+}
+
+// ── Controls ──
+.flatten-demo__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.flatten-demo__hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: $color-muted;
+  font-style: italic;
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: $radius;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+
+  &:active { transform: scale(0.95); }
+
+  &--emit {
+    background: $color-switch;
+    color: #fff;
+  }
+
+  &--clear {
+    background: $color-border;
+    color: $color-text;
+  }
+}
+
+// ── Four Column Grid ──
+.flatten-demo__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 800px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.flatten-demo__column {
+  background: $color-surface-alt;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+  overflow: hidden;
+}
+
+.flatten-demo__col-header {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 2px solid $color-border;
+  text-align: center;
+
+  h3 {
+    margin: 0;
+    font-size: 0.85rem;
+  }
+}
+
+.flatten-demo__col-desc {
+  font-size: 0.7rem;
+  color: $color-muted;
+}
+
+.flatten-demo__col-stats {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.75rem;
+  border-bottom: 1px solid $color-border;
+}
+
+.flatten-demo__stat--completed { color: $color-completed; }
+.flatten-demo__stat--cancelled { color: $color-cancelled; }
+.flatten-demo__stat--ignored { color: $color-ignored; }
+.flatten-demo__stat--active { color: $color-loading; }
+
+.flatten-demo__col-entries {
+  padding: 0.4rem 0.5rem;
+  min-height: 100px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+// ── Task Entries ──
+.flatten-demo__entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.35rem 0.4rem;
+  margin-bottom: 0.3rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  animation: fadeIn 0.2s ease;
+
+  &--loading {
+    background: rgba($color-loading, 0.1);
+    border: 1px solid rgba($color-loading, 0.3);
+  }
+
+  &--completed {
+    background: rgba($color-completed, 0.08);
+    border: 1px solid rgba($color-completed, 0.2);
+  }
+
+  &--cancelled {
+    background: rgba($color-cancelled, 0.08);
+    border: 1px solid rgba($color-cancelled, 0.2);
+    opacity: 0.6;
+  }
+
+  &--ignored {
+    background: rgba($color-ignored, 0.08);
+    border: 1px solid rgba($color-ignored, 0.2);
+    opacity: 0.5;
+  }
+}
+
+.flatten-demo__entry-task {
+  font-weight: 600;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 0.75rem;
+}
+
+// ── Badges ──
+.flatten-demo__badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+
+  &--loading {
+    color: $color-loading;
+  }
+
+  &--completed {
+    color: $color-completed;
+  }
+
+  &--cancelled {
+    color: $color-cancelled;
+  }
+
+  &--ignored {
+    color: $color-ignored;
+  }
+}
+
+// ── Pipeline Log ──
+.flatten-demo__log {
+  h3 {
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+  }
+}
+
+.flatten-demo__log-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+
+  li {
+    padding: 0.35rem 0;
+    border-bottom: 1px solid $color-border;
+    font-size: 0.75rem;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    animation: fadeIn 0.2s ease;
+
+    &:last-child { border-bottom: none; }
+  }
+}
+
+.flatten-demo__log-stage {
+  margin-right: 0.4rem;
+}
+
+// ── Empty state ──
+.flatten-demo__empty {
+  color: $color-muted;
+  font-style: italic;
+  font-size: 0.8rem;
+  margin: 0;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+// ── Animation ──
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

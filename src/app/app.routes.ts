@@ -55,4 +55,11 @@ export const routes: Routes = [
         (m) => m.SwmapDemoComponent,
       ),
   },
+  {
+    path: 'flatten-demo',
+    loadComponent: () =>
+      import('./features/flatten-demo/flatten-demo.component').then(
+        (m) => m.FlattenDemoComponent,
+      ),
+  },
 ];

@@ -46,5 +46,10 @@ export class AppComponent {
       label: 'SwitchMap Demo',
       icon: 'switch_access',
     },
+    {
+      path: 'flatten-demo',
+      label: 'Flatten Demo',
+      icon: 'link',
+    }
   ];
 }

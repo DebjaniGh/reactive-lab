@@ -1,0 +1,106 @@
+<!-- flatten-demo.component.html -->
+
+<section class="flatten-demo">
+
+  <!-- ① Header -->
+  <header class="flatten-demo__header">
+    <h2>🔀 Flattening Operators — Side by Side</h2>
+    <p class="flatten-demo__subtitle">
+      Emit tasks rapidly. Watch how each operator handles concurrency differently.
+    </p>
+  </header>
+
+  <!-- ② Explanation -->
+  <div class="flatten-demo__explanation">
+    <p>
+      All four operators receive the <strong>same input</strong> simultaneously.
+      Each task takes <strong>{{ taskDuration / 1000 }}s</strong> to complete.
+      Emit multiple tasks quickly to see the differences.
+    </p>
+  </div>
+
+  <!-- ③ Controls -->
+  <div class="flatten-demo__controls">
+    <button class="btn btn--emit" (click)="onEmitTask()">
+      📡 Emit Task
+    </button>
+    <button class="btn btn--clear" (click)="onClear()">
+      🗑️ Clear All
+    </button>
+    <p class="flatten-demo__hint">
+      💡 Click "Emit Task" 3 times quickly (within 2 seconds) to see the differences
+    </p>
+  </div>
+
+  <!-- ④ Four Operator Columns -->
+  <div class="flatten-demo__grid">
+    @for (col of columns; track col.name) {
+      <div class="flatten-demo__column">
+
+        <div class="flatten-demo__col-header">
+          <h3>{{ col.icon }} {{ col.label }}</h3>
+          <span class="flatten-demo__col-desc">{{ col.description }}</span>
+        </div>
+
+        <div class="flatten-demo__col-stats">
+          <span class="flatten-demo__stat--completed">✅ {{ col.completed }}</span>
+          @if (col.name === 'switchMap') {
+            <span class="flatten-demo__stat--cancelled">❌ {{ col.cancelled }}</span>
+          }
+          @if (col.name === 'exhaustMap') {
+            <span class="flatten-demo__stat--ignored">🚫 {{ col.ignored }}</span>
+          }
+          @if (col.active > 0) {
+            <span class="flatten-demo__stat--active">⏳ {{ col.active }}</span>
+          }
+        </div>
+
+        <div class="flatten-demo__col-entries">
+          @if (col.entries.length === 0) {
+            <p class="flatten-demo__empty">No tasks yet</p>
+          } @else {
+            @for (entry of col.entries; track entry.id) {
+              <div
+                class="flatten-demo__entry"
+                [class.flatten-demo__entry--loading]="entry.status === 'loading'"
+                [class.flatten-demo__entry--completed]="entry.status === 'completed'"
+                [class.flatten-demo__entry--cancelled]="entry.status === 'cancelled'"
+                [class.flatten-demo__entry--ignored]="entry.status === 'ignored'"
+              >
+                <span class="flatten-demo__entry-task">{{ entry.task }}</span>
+                @if (entry.status === 'loading') {
+                  <span class="flatten-demo__badge flatten-demo__badge--loading">⏳</span>
+                } @else if (entry.status === 'completed') {
+                  <span class="flatten-demo__badge flatten-demo__badge--completed">✅ {{ entry.duration }}ms</span>
+                } @else if (entry.status === 'cancelled') {
+                  <span class="flatten-demo__badge flatten-demo__badge--cancelled">❌</span>
+                } @else if (entry.status === 'ignored') {
+                  <span class="flatten-demo__badge flatten-demo__badge--ignored">🚫</span>
+                }
+              </div>
+            }
+          }
+        </div>
+
+      </div>
+    }
+  </div>
+
+  <!-- ⑤ Pipeline Log -->
+  <div class="flatten-demo__log">
+    <h3>📋 Pipeline Log</h3>
+    @if (log.length === 0) {
+      <p class="flatten-demo__empty">Emit tasks to see the pipeline in action.</p>
+    } @else {
+      <ul class="flatten-demo__log-list">
+        @for (entry of log; track entry.id) {
+          <li>
+            <span class="flatten-demo__log-stage">{{ entry.stage }}</span>
+            {{ entry.message }}
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+</section>
