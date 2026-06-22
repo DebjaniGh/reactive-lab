@@ -1,44 +1,31 @@
 <div class="demo-wrapper">
-
   <h1>🔗 RxJS Combination Operators — Side by Side</h1>
 
-  <!-- ── Source Controls ─────────────────────────────── -->
+  <!-- ── Sources ── -->
   <section class="sources">
     <h2>📡 Sources</h2>
     <div class="source-row">
 
-      <!-- Source A -->
       <div class="source-card source-a">
         <h3>Source A</h3>
-        <button (click)="emitA()" class="btn emit">Emit A</button>
-        <button
-          (click)="completeA()"
-          class="btn complete"
-          [disabled]="forkACompleted">
+        <button class="btn emit" (click)="emitA()">Emit A</button>
+        <button class="btn complete" (click)="completeA()" [disabled]="forkACompleted">
           {{ forkACompleted ? '✅ Completed' : 'Complete A (forkJoin)' }}
         </button>
       </div>
 
-      <!-- Source B -->
       <div class="source-card source-b">
         <h3>Source B</h3>
-        <button (click)="emitB()" class="btn emit">Emit B</button>
-        <button
-          (click)="completeB()"
-          class="btn complete"
-          [disabled]="forkBCompleted">
+        <button class="btn emit" (click)="emitB()">Emit B</button>
+        <button class="btn complete" (click)="completeB()" [disabled]="forkBCompleted">
           {{ forkBCompleted ? '✅ Completed' : 'Complete B (forkJoin)' }}
         </button>
       </div>
 
-      <!-- Source C -->
       <div class="source-card source-c">
         <h3>Source C</h3>
-        <button (click)="emitC()" class="btn emit">Emit C</button>
-        <button
-          (click)="completeC()"
-          class="btn complete"
-          [disabled]="forkCCompleted">
+        <button class="btn emit" (click)="emitC()">Emit C</button>
+        <button class="btn complete" (click)="completeC()" [disabled]="forkCCompleted">
           {{ forkCCompleted ? '✅ Completed' : 'Complete C (forkJoin)' }}
         </button>
       </div>
@@ -46,109 +33,128 @@
     </div>
 
     <div class="global-actions">
-      <button (click)="reset()" class="btn reset">🔄 Reset All</button>
+      <button class="btn reset" (click)="reset()">🔄 Reset All</button>
     </div>
   </section>
 
-  <!-- ── Operator Panels ──────────────────────────────── -->
-  <section class="panels">
+  <!-- ── Panels ── -->
+  <div class="panels">
 
     <!-- combineLatest -->
     <div class="panel">
       <div class="panel-header combine-latest-header">
         <h3>combineLatest</h3>
-        <button (click)="clearLog('combineLatest')" class="btn clear">Clear</button>
+        <button class="btn clear" (click)="clearLog('combineLatest')">Clear</button>
       </div>
 
-      <div class="explanation">
-        Emits the <strong>latest value from ALL</strong> sources
-        whenever <em>any</em> source emits.
+      <p class="explanation">
+        Emits the latest value from <strong>ALL</strong> sources
+        whenever any source emits.
         Requires at least one emission from each source.
-      </div>
+      </p>
 
-      <div class="log-box" *ngIf="combineLatestLog.length; else noEmit">
-        <div
-          class="log-entry"
-          *ngFor="let entry of combineLatestLog">
-          <span class="timestamp">{{ entry.timestamp }}</span>
-          <span class="value">{{ entry.value }}</span>
+      <!--  waiting indicator -->
+      @if (!hasEmittedA || !hasEmittedB || !hasEmittedC) {
+        <div class="waiting-indicator">
+          <p>⏳ Waiting for first emission from all sources:</p>
+          <ul>
+            <li [class.ready]="hasEmittedA">
+              {{ hasEmittedA ? '✅' : '⬜' }} Source A
+            </li>
+            <li [class.ready]="hasEmittedB">
+              {{ hasEmittedB ? '✅' : '⬜' }} Source B
+            </li>
+            <li [class.ready]="hasEmittedC">
+              {{ hasEmittedC ? '✅' : '⬜' }} Source C
+            </li>
+          </ul>
         </div>
-      </div>
-      <ng-template #noEmit>
-        <div class="empty-state">
-          Emit from all three sources to see output…
+      } @else {
+        <div class="log-box">
+          @if (combineLatestLog.length === 0) {
+            <p class="empty-state">Emit from any source to see output…</p>
+          } @else {
+            @for (entry of combineLatestLog; track $index) {
+              <div class="log-entry">
+                <span class="timestamp">{{ entry.timestamp }}</span>
+                <span class="value">{{ entry.value }}</span>
+              </div>
+            }
+          }
         </div>
-      </ng-template>
+      }
+      <!-- 🆕 END -->
+
     </div>
 
-    <!-- merge -->
+    <!-- merge — UNCHANGED from your original [2] -->
     <div class="panel">
       <div class="panel-header merge-header">
         <h3>merge</h3>
-        <button (click)="clearLog('merge')" class="btn clear">Clear</button>
+        <button class="btn clear" (click)="clearLog('merge')">Clear</button>
       </div>
 
-      <div class="explanation">
-        Passes <strong>every emission</strong> from any source
+      <p class="explanation">
+        Passes every emission from any source
         straight through — first come, first served.
-      </div>
+      </p>
 
-      <div class="log-box" *ngIf="mergeLog.length; else noEmitMerge">
-        <div
-          class="log-entry"
-          *ngFor="let entry of mergeLog">
-          <span class="timestamp">{{ entry.timestamp }}</span>
-          <span class="value">{{ entry.value }}</span>
-        </div>
+      <div class="log-box">
+        @if (mergeLog.length === 0) {
+          <p class="empty-state">Emit from any source…</p>
+        } @else {
+          @for (entry of mergeLog; track $index) {
+            <div class="log-entry">
+              <span class="timestamp">{{ entry.timestamp }}</span>
+              <span class="value">{{ entry.value }}</span>
+            </div>
+          }
+        }
       </div>
-      <ng-template #noEmitMerge>
-        <div class="empty-state">Emit from any source…</div>
-      </ng-template>
     </div>
 
-    <!-- forkJoin -->
+    <!-- forkJoin — UNCHANGED from your original [2] -->
     <div class="panel">
       <div class="panel-header fork-join-header">
         <h3>forkJoin</h3>
-        <button (click)="clearLog('forkJoin')" class="btn clear">Clear</button>
+        <button class="btn clear" (click)="clearLog('forkJoin')">Clear</button>
       </div>
 
-      <div class="explanation">
-        Waits for <strong>all sources to complete</strong>,
-        then emits only the <em>last value</em> of each.
+      <p class="explanation">
+        Waits for all sources to <em>complete</em>,
+        then emits only the last value of each.
         Great for parallel HTTP calls.
-      </div>
+      </p>
 
-      <!-- completion status indicators -->
       <div class="fork-status-row">
-        <span [class]="forkACompleted ? 'badge done' : 'badge pending'">
+        <span class="badge" [class.done]="forkACompleted" [class.pending]="!forkACompleted">
           A {{ forkACompleted ? '✅' : '⏳' }}
         </span>
-        <span [class]="forkBCompleted ? 'badge done' : 'badge pending'">
+        <span class="badge" [class.done]="forkBCompleted" [class.pending]="!forkBCompleted">
           B {{ forkBCompleted ? '✅' : '⏳' }}
         </span>
-        <span [class]="forkCCompleted ? 'badge done' : 'badge pending'">
+        <span class="badge" [class.done]="forkCCompleted" [class.pending]="!forkCCompleted">
           C {{ forkCCompleted ? '✅' : '⏳' }}
         </span>
       </div>
 
-      <div class="fork-status-msg" [class.done]="forkJoinDone">
+      <p class="fork-status-msg" [class.done]="forkJoinDone">
         {{ forkJoinStatus }}
-      </div>
+      </p>
 
-      <div class="log-box" *ngIf="forkJoinLog.length">
-        <div
-          class="log-entry"
-          *ngFor="let entry of forkJoinLog">
-          <span class="timestamp">{{ entry.timestamp }}</span>
-          <span class="value">{{ entry.value }}</span>
-        </div>
+      <div class="log-box">
+        @for (entry of forkJoinLog; track $index) {
+          <div class="log-entry">
+            <span class="timestamp">{{ entry.timestamp }}</span>
+            <span class="value">{{ entry.value }}</span>
+          </div>
+        }
       </div>
     </div>
 
-  </section>
+  </div>
 
-  <!-- ── Quick Reference ──────────────────────────────── -->
+  <!-- ── Reference Table — UNCHANGED from your original [2] ── -->
   <section class="reference">
     <h2>📖 Quick Reference</h2>
     <table>

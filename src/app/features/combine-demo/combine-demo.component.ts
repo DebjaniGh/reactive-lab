@@ -22,6 +22,11 @@ interface EmitLog {
 })
 export class CombinationOperatorsComponent implements OnDestroy {
 
+  // ── combineLatest readiness tracking ──
+  hasEmittedA = false;
+  hasEmittedB = false;
+  hasEmittedC = false;
+
   // ── Sources ──────────────────────────────────────────────
   private sourceA$ = new Subject<string>();
   private sourceB$ = new Subject<string>();
@@ -119,6 +124,7 @@ export class CombinationOperatorsComponent implements OnDestroy {
 
   // ── Emit buttons ──────────────────────────────────────────
   emitA(): void {
+    this.hasEmittedA = true;
     const val = `A${++this.counterA}`;
     this.sourceA$.next(val);
     // also push to forkJoin source if not completed
@@ -126,12 +132,14 @@ export class CombinationOperatorsComponent implements OnDestroy {
   }
 
   emitB(): void {
+    this.hasEmittedB = true;
     const val = `B${++this.counterB}`;
     this.sourceB$.next(val);
     if (!this.forkBCompleted) this.forkB$.next(val);
   }
 
   emitC(): void {
+    this.hasEmittedC = true;
     const val = `C${++this.counterC}`;
     this.sourceC$.next(val);
     if (!this.forkCCompleted) this.forkC$.next(val);
@@ -183,6 +191,10 @@ export class CombinationOperatorsComponent implements OnDestroy {
     this.forkACompleted   = false;
     this.forkBCompleted   = false;
     this.forkCCompleted   = false;
+
+    this.hasEmittedA = false;
+    this.hasEmittedB = false;
+    this.hasEmittedC = false;
 
     // Step 4: Re-wire all subscriptions
     this.setupCombineLatest();
