@@ -1,48 +1,19 @@
 // error-demo.component.scss
 
-$color-success: #22c55e;
+// ── Design tokens ──
 $color-error: #ef4444;
+$color-success: #22c55e;
 $color-warning: #f59e0b;
-$color-info: #3b82f6;
 $color-recovered: #8b5cf6;
-$color-surface: #1e1e2e;
-$color-surface-alt: #262639;
 $color-text: #e2e8f0;
 $color-muted: #94a3b8;
 $color-border: #334155;
 $radius: 8px;
 
-.error-demo {
-  max-width: 960px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: $color-surface;
-  border-radius: $radius;
-  color: $color-text;
-  font-family: 'Segoe UI', system-ui, sans-serif;
-}
-
-// ── Header ──
-.error-demo__header {
+// ── Explanation Banner ──
+.explanation-banner {
   margin-bottom: 1.5rem;
-  text-align: center;
-
-  h2 {
-    margin: 0 0 0.25rem;
-    font-size: 1.5rem;
-  }
-}
-
-.error-demo__subtitle {
-  margin: 0;
-  color: $color-muted;
-  font-size: 0.9rem;
-}
-
-// ── Explanation ──
-.error-demo__explanation {
-  margin-bottom: 1.5rem;
-  padding: 1.25rem 1.5rem;
+  padding: 1rem 1.25rem;
   background: #1a1a2e;
   border: 1px solid #2d2d44;
   border-radius: $radius;
@@ -51,24 +22,15 @@ $radius: 8px;
   p {
     margin: 0;
     font-size: 0.9rem;
-    line-height: 1.7;
+    line-height: 1.6;
     color: #f1f5f9;
-
-    code {
-      background: #2d3748;
-      color: #90cdf4;
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
 
     strong { color: #fff; }
   }
 }
 
 // ── Controls ──
-.error-demo__controls {
+.controls {
   display: flex;
   gap: 0.75rem;
   margin-bottom: 1.5rem;
@@ -76,24 +38,46 @@ $radius: 8px;
 }
 
 .btn {
-  padding: 0.6rem 1.2rem;
+  padding: 0.6rem 1.4rem;
   border: none;
   border-radius: $radius;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 700;
   cursor: pointer;
   transition: opacity 0.2s ease, transform 0.1s ease;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 
   &:active { transform: scale(0.95); }
 
-  &--success { background: $color-success;  color: #fff; }
-  &--warn    { background: $color-warning;  color: #1e1e2e; }
-  &--error   { background: $color-error;    color: #fff; }
-  &--reset   { background: $color-border;   color: $color-text; }
+  &.emit {
+    background: #16a34a;     // darker green
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  &.warn {
+    background: #d97706;     // darker amber — better contrast
+    color: #ffffff;          // 🆕 white text instead of dark
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+
+  &.error {
+    background: #dc2626;     // darker red
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  &.reset {
+    background: #475569;
+    color: #f1f5f9;
+  }
 }
 
 // ── Panels ──
-.error-demo__panels {
+.panels {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
@@ -104,9 +88,9 @@ $radius: 8px;
   }
 }
 
-.error-demo__panel {
-  background: #2d3f55;       // 🆕 noticeably lighter — a visible blue-navy
-  border: 1px solid #3d5068; // 🆕 slightly lighter border to match
+.panel {
+  background: #2d3f55;
+  border: 1px solid #3d5068;
   border-radius: $radius;
   padding: 1rem;
   display: flex;
@@ -114,74 +98,56 @@ $radius: 8px;
   gap: 0.6rem;
   transition: border-color 0.3s ease;
 
-  &--alive {
-    border-top: 3px solid $color-success;
-  }
-
-  &--dead {
-    border-top: 3px solid $color-error;
-    opacity: 0.85;
-  }
+  &--alive { border-top: 3px solid $color-success; }
+  &--dead  { border-top: 3px solid $color-error; opacity: 0.85; }
 }
 
-.error-demo__panel-header {
+.panel-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   h3 {
     margin: 0;
-    font-size: 0.9rem;
-    font-family: 'Fira Code', monospace;
-    color: #ffffff;            // 🆕 pure white
+    font-size: 0.95rem;
+    color: #ffffff;
   }
 }
 
-.error-demo__status-badge {
+.status-badge {
   font-size: 0.7rem;
   font-weight: 700;
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
 
-  &--alive {
-    background: rgba($color-success, 0.2);
-    color: $color-success;
-  }
-
-  &--dead {
-    background: rgba($color-error, 0.2);
-    color: $color-error;
-  }
+  &--alive { background: rgba($color-success, 0.2); color: #86efac; }
+  &--dead  { background: rgba($color-error,   0.2); color: #fca5a5; }
 }
 
-.error-demo__panel-desc {
-  font-size: 0.8rem;
-  color: #e2e8f0;            // 🆕 much brighter — near white
+.panel-desc {
+  font-size: 0.82rem;
+  color: #e2e8f0;
   line-height: 1.6;
   margin: 0;
-
-  code {
-    background: rgba(#90cdf4, 0.2);
-    color: #93c5fd;
-    padding: 0.1rem 0.35rem;
-    border-radius: 3px;
-    font-size: 0.72rem;
-    font-weight: 600;
-    border: 1px solid rgba(#90cdf4, 0.25);
-  }
 }
 
-.error-demo__attempts {
+.dead-banner {
+  background: rgba($color-error, 0.12);
+  border: 1px solid rgba($color-error, 0.3);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
   font-size: 0.78rem;
-  color: #e2e8f0;            // 🆕 bright
-
-  strong {
-    color: #ffffff;
-    font-size: 0.85rem;
-  }
+  color: #fca5a5;
 }
 
-.error-demo__retry-badge {
+.attempts {
+  font-size: 0.78rem;
+  color: #e2e8f0;
+
+  strong { color: #ffffff; }
+}
+
+.retry-badge {
   margin-left: 0.5rem;
   background: rgba($color-warning, 0.2);
   color: $color-warning;
@@ -190,96 +156,111 @@ $radius: 8px;
   font-size: 0.7rem;
 }
 
-.error-demo__dead-notice {
-  background: rgba($color-error, 0.1);
-  border: 1px solid rgba($color-error, 0.3);
-  border-radius: 4px;
-  padding: 0.5rem 0.6rem;
-  font-size: 0.75rem;
-  color: $color-error;
-}
-
-.error-demo__results {
+// ── Results ──
+.results {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  min-height: 60px;
+  min-height: 40px;
 }
 
-.error-demo__result {
+.result-entry {
   padding: 0.4rem 0.6rem;
   border-radius: 4px;
-  font-size: 0.82rem;    // 🆕 slightly larger
+  font-size: 0.8rem;
   font-family: 'Fira Code', monospace;
   animation: fadeIn 0.2s ease;
 
-  &--success {
-    background: rgba($color-success, 0.12);
-    color: #86efac;      // 🆕 lighter green — more visible
-    border: 1px solid rgba($color-success, 0.25);
+  &--success  { background: rgba($color-success,   0.12); color: #86efac; border: 1px solid rgba($color-success,   0.2); }
+  &--error    { background: rgba($color-error,     0.12); color: #fca5a5; border: 1px solid rgba($color-error,     0.2); }
+  &--recovered{ background: rgba($color-recovered, 0.12); color: #c4b5fd; border: 1px solid rgba($color-recovered, 0.2); }
+}
+
+// ── Progressive Disclosure ──
+.how-it-works {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+  summary {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover { color: #cbd5e1; }
   }
 
-  &--error {
-    background: rgba($color-error, 0.12);
-    color: #fca5a5;      // 🆕 lighter red — more visible
-    border: 1px solid rgba($color-error, 0.25);
-  }
+  p {
+    margin: 0.5rem 0 0;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: #cbd5e1;
 
-  &--recovered {
-    background: rgba($color-recovered, 0.12);
-    color: #c4b5fd;      // 🆕 lighter purple — more visible
-    border: 1px solid rgba($color-recovered, 0.25);
+    code {
+      background: rgba(#90cdf4, 0.15);
+      color: #93c5fd;
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px;
+      font-size: 0.72rem;
+    }
+
+    strong { color: #fff; }
   }
 }
 
-// ── Pipeline Log ──
-.error-demo__log {
+// ── Log Section ──
+.log-section {
   h3 {
     margin: 0 0 0.75rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    color: #111827;   // 🆕 near black
   }
 }
 
-.error-demo__log-list {
+.log-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 220px;
+  max-height: 180px;
   overflow-y: auto;
 }
 
-.error-demo__log-entry {
-  padding: 0.35rem 0;
-  border-bottom: 1px solid $color-border;
+.log-entry {
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);  // 🆕 dark border for light bg
   font-size: 0.78rem;
   font-family: 'Fira Code', monospace;
   animation: fadeIn 0.2s ease;
+  border-radius: 3px;
+  margin-bottom: 2px;
 
   &:last-child { border-bottom: none; }
 
-  &--success { color: $color-success; }
-  &--error   { color: $color-error; }
-  &--warning { color: $color-warning; }
-  &--info    { color: $color-muted; }
+  // 🆕 All colors darkened for light background readability
+  &--success { color: #15803d; }   // dark green
+  &--error   { color: #b91c1c; }   // dark red
+  &--warning { color: #b45309; }   // dark amber
+  &--info    { color: #1e40af; }   // dark blue
 }
 
-.error-demo__log-panel {
+.log-panel {
   margin-right: 0.5rem;
+  font-weight: 700;
+  color: #374151;   // 🆕 dark gray — clearly visible on light background
 }
 
 // ── Empty state ──
-.error-demo__empty {
-  color: #94a3b8;            // keep muted but readable
+.empty-state {
+  color: #6b7280;    // 🆕 medium gray — readable on light background
   font-style: italic;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   margin: 0;
-  padding: 0.5rem 0;
+  padding: 0.4rem 0;
   text-align: center;
-  background: rgba(255, 255, 255, 0.05); // 🆕 tiny lift
-  border-radius: 4px;
 }
 
-// ── Animations ──
+// ── Animation ──
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(4px); }
   to   { opacity: 1; transform: translateY(0); }
