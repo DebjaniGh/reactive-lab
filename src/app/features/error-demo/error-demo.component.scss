@@ -105,8 +105,8 @@ $radius: 8px;
 }
 
 .error-demo__panel {
-  background: $color-surface-alt;
-  border: 1px solid $color-border;
+  background: #2d3f55;       // 🆕 noticeably lighter — a visible blue-navy
+  border: 1px solid #3d5068; // 🆕 slightly lighter border to match
   border-radius: $radius;
   padding: 1rem;
   display: flex;
@@ -133,6 +133,7 @@ $radius: 8px;
     margin: 0;
     font-size: 0.9rem;
     font-family: 'Fira Code', monospace;
+    color: #ffffff;            // 🆕 pure white
   }
 }
 
@@ -154,25 +155,30 @@ $radius: 8px;
 }
 
 .error-demo__panel-desc {
-  font-size: 0.75rem;
-  color: $color-muted;
-  line-height: 1.5;
+  font-size: 0.8rem;
+  color: #e2e8f0;            // 🆕 much brighter — near white
+  line-height: 1.6;
   margin: 0;
 
   code {
-    background: rgba($color-info, 0.15);
-    color: #90cdf4;
-    padding: 0.1rem 0.3rem;
+    background: rgba(#90cdf4, 0.2);
+    color: #93c5fd;
+    padding: 0.1rem 0.35rem;
     border-radius: 3px;
     font-size: 0.72rem;
+    font-weight: 600;
+    border: 1px solid rgba(#90cdf4, 0.25);
   }
 }
 
 .error-demo__attempts {
-  font-size: 0.75rem;
-  color: $color-muted;
+  font-size: 0.78rem;
+  color: #e2e8f0;            // 🆕 bright
 
-  strong { color: $color-text; }
+  strong {
+    color: #ffffff;
+    font-size: 0.85rem;
+  }
 }
 
 .error-demo__retry-badge {
@@ -203,26 +209,26 @@ $radius: 8px;
 .error-demo__result {
   padding: 0.4rem 0.6rem;
   border-radius: 4px;
-  font-size: 0.78rem;
+  font-size: 0.82rem;    // 🆕 slightly larger
   font-family: 'Fira Code', monospace;
   animation: fadeIn 0.2s ease;
 
   &--success {
-    background: rgba($color-success, 0.1);
-    color: $color-success;
-    border: 1px solid rgba($color-success, 0.2);
+    background: rgba($color-success, 0.12);
+    color: #86efac;      // 🆕 lighter green — more visible
+    border: 1px solid rgba($color-success, 0.25);
   }
 
   &--error {
-    background: rgba($color-error, 0.1);
-    color: $color-error;
-    border: 1px solid rgba($color-error, 0.2);
+    background: rgba($color-error, 0.12);
+    color: #fca5a5;      // 🆕 lighter red — more visible
+    border: 1px solid rgba($color-error, 0.25);
   }
 
   &--recovered {
-    background: rgba($color-recovered, 0.1);
-    color: $color-recovered;
-    border: 1px solid rgba($color-recovered, 0.2);
+    background: rgba($color-recovered, 0.12);
+    color: #c4b5fd;      // 🆕 lighter purple — more visible
+    border: 1px solid rgba($color-recovered, 0.25);
   }
 }
 
@@ -263,10 +269,14 @@ $radius: 8px;
 
 // ── Empty state ──
 .error-demo__empty {
-  color: $color-muted;
+  color: #94a3b8;            // keep muted but readable
   font-style: italic;
   font-size: 0.8rem;
   margin: 0;
+  padding: 0.5rem 0;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05); // 🆕 tiny lift
+  border-radius: 4px;
 }
 
 // ── Animations ──
