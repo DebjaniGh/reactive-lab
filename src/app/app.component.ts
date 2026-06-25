@@ -44,7 +44,7 @@ export class AppComponent {
     {
       path: 'swmap-demo',
       label: 'SwitchMap Demo',
-      icon: 'switch_access',
+      icon: 'swap_horiz',
     },
     {
       path: 'flatten-demo',
