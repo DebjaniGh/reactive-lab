@@ -1,0 +1,174 @@
+<!-- share-demo.component.html -->
+
+<div class="demo-wrapper">
+  <h1>🔌 shareReplay() — The Power Strip</h1>
+
+  <!-- ① Explanation -->
+  <div class="explanation-banner">
+    <p>
+      Add subscribers to both panels. Compare the HTTP call counts.
+    </p>
+  </div>
+
+  <!-- ② Controls -->
+  <section class="controls">
+    <button class="btn reset" (click)="onReset()">🔄 Reset All</button>
+  </section>
+
+  <!-- ③ Two Panels -->
+  <div class="panels">
+
+    <!-- Panel 1: No sharing -->
+    <div class="panel panel--raw">
+      <div class="panel-header">
+        <h3>❌ Without Sharing</h3>
+        <div class="http-counter http-counter--bad">
+          HTTP Calls: <strong>{{ rawHttpCount }}</strong>
+        </div>
+      </div>
+
+      <p class="panel-desc">
+        Every subscriber triggers its own HTTP call.
+        3 subscribers = 3 network requests.
+      </p>
+
+      <button class="btn add add--raw" (click)="onAddRawSubscriber()">
+        ➕ Add Subscriber
+      </button>
+
+      <div class="subscriber-list">
+        @if (rawSubscribers.length === 0) {
+          <p class="empty-state">No subscribers yet — click "Add Subscriber"</p>
+        } @else {
+          @for (sub of rawSubscribers; track sub.id) {
+            <div
+              class="subscriber-entry"
+              [class.subscriber-entry--waiting]="sub.status === 'waiting'"
+              [class.subscriber-entry--received]="sub.status === 'received'"
+            >
+              <div class="subscriber-header">
+                <span class="subscriber-label">{{ sub.label }}</span>
+                @if (sub.status === 'waiting') {
+                  <span class="badge badge--waiting">⏳ Fetching...</span>
+                } @else {
+                  <span class="badge badge--received">✅ Received</span>
+                }
+              </div>
+              @if (sub.data) {
+                <div class="subscriber-data">
+                  {{ sub.data.join(', ') }}
+                </div>
+                <div class="subscriber-note subscriber-note--bad">
+                  ❌ Triggered its own HTTP call
+                </div>
+              }
+            </div>
+          }
+        }
+      </div>
+
+      <details class="how-it-works">
+        <summary>How does this work?</summary>
+        <p>
+          Without <code>shareReplay()</code>, every call to
+          <code>.subscribe()</code> creates a <strong>new, independent
+          execution</strong> of the Observable. Each execution triggers
+          a separate HTTP request — even if the data is identical.
+        </p>
+      </details>
+    </div>
+
+    <!-- Panel 2: With shareReplay -->
+    <div class="panel panel--shared">
+      <div class="panel-header">
+        <h3>✅ With shareReplay(1)</h3>
+        <div class="http-counter http-counter--good">
+          HTTP Calls: <strong>{{ sharedHttpCount }}</strong>
+        </div>
+      </div>
+
+      <p class="panel-desc">
+        One HTTP call, shared among all subscribers.
+        Late subscribers get the cached result instantly.
+      </p>
+
+      <button class="btn add add--shared" (click)="onAddSharedSubscriber()">
+        ➕ Add Subscriber
+      </button>
+
+      <div class="subscriber-list">
+        @if (sharedSubscribers.length === 0) {
+          <p class="empty-state">No subscribers yet — click "Add Subscriber"</p>
+        } @else {
+          @for (sub of sharedSubscribers; track sub.id) {
+            <div
+              class="subscriber-entry"
+              [class.subscriber-entry--waiting]="sub.status === 'waiting'"
+              [class.subscriber-entry--received]="sub.status === 'received'"
+              [class.subscriber-entry--cached]="sub.fromCache"
+            >
+              <div class="subscriber-header">
+                <span class="subscriber-label">{{ sub.label }}</span>
+                @if (sub.status === 'waiting') {
+                  <span class="badge badge--waiting">⏳ Fetching...</span>
+                } @else if (sub.fromCache) {
+                  <span class="badge badge--cached">⚡ From Cache</span>
+                } @else {
+                  <span class="badge badge--received">✅ Received</span>
+                }
+              </div>
+              @if (sub.data) {
+                <div class="subscriber-data">
+                  {{ sub.data.join(', ') }}
+                </div>
+                @if (sub.fromCache) {
+                  <div class="subscriber-note subscriber-note--good">
+                    ⚡ No HTTP call — served from cache
+                  </div>
+                } @else {
+                  <div class="subscriber-note subscriber-note--good">
+                    ✅ Shared HTTP call — only triggered once
+                  </div>
+                }
+              }
+            </div>
+          }
+        }
+      </div>
+
+      <details class="how-it-works">
+        <summary>How does this work?</summary>
+        <p>
+          <code>shareReplay(1)</code> uses a <code>ReplaySubject(1)</code>
+          internally. The first subscriber triggers the HTTP call. The
+          result is <strong>cached</strong>. All subsequent subscribers
+          receive the cached result immediately — no new HTTP call is made.
+          This is identical to how <code>ReplaySubject</code> replays
+          the last value to late subscribers — which you already saw in
+          the Subjects demo.
+        </p>
+      </details>
+    </div>
+
+  </div>
+
+  <!-- ④ Activity Log -->
+  <div class="log-section">
+    <h3>📋 Activity Log</h3>
+    @if (log.length === 0) {
+      <p class="empty-state">
+        Click "Add Subscriber" on both panels to see the difference.
+      </p>
+    } @else {
+      <ul class="log-list">
+        @for (entry of log; track entry.id) {
+          <li [class]="'log-entry log-entry--' + entry.type">
+            <span class="log-panel">{{ entry.panel }}</span>
+            {{ entry.message }}
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+</div>

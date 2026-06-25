@@ -63,8 +63,13 @@ export class AppComponent {
     },
     {
       path: 'subject-demo',
-      label: 'Subject Demo',
+      label: 'Subjects Demo',
       icon: 'subject',
     },
+    {
+      path: 'share-demo',
+      label: 'Share Replay Demo',
+      icon: 'share',
+    }
   ];
 }

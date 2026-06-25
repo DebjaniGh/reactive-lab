@@ -1,0 +1,323 @@
+// share-demo.component.scss
+
+$color-raw: #ef4444;
+$color-shared: #22c55e;
+$color-cached: #8b5cf6;
+$bg-dark: #0f172a;
+$bg-card: #1e293b;
+$text-primary: #f1f5f9;
+$text-muted: #94a3b8;
+$border: #334155;
+$radius: 10px;
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.demo-wrapper {
+  min-height: 100vh;
+  background: $bg-dark;
+  color: $text-primary;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
+
+  h1 {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+}
+
+// ── Explanation ──
+.explanation-banner {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: #1a1a2e;
+  border: 1px solid #2d2d44;
+  border-radius: $radius;
+  border-left: 3px solid $color-shared;
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #f1f5f9;
+
+    code {
+      background: #2d3748;
+      color: #90cdf4;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    strong { color: #fff; }
+  }
+}
+
+// ── Controls ──
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  &:hover:not(:disabled) { opacity: 0.85; transform: translateY(-1px); }
+  &:active:not(:disabled) { transform: scale(0.95); }
+
+  &.reset { background: #475569; color: #fff; }
+
+  &.add {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  &.add--raw    { background: rgba($color-raw, 0.2);    color: $color-raw; border: 1px solid rgba($color-raw, 0.3); }
+  &.add--shared { background: rgba($color-shared, 0.2); color: $color-shared; border: 1px solid rgba($color-shared, 0.3); }
+}
+
+// ── Panels ──
+.panels {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  background: #253347;
+  border: 1px solid #3d5068;
+  border-radius: $radius;
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+
+  &--raw    { border-top: 3px solid $color-raw; }
+  &--shared { border-top: 3px solid $color-shared; }
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #fff;
+  }
+}
+
+.http-counter {
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  &--bad {
+    background: rgba($color-raw, 0.15);
+    color: #fca5a5;
+    border: 1px solid rgba($color-raw, 0.3);
+  }
+
+  &--good {
+    background: rgba($color-shared, 0.15);
+    color: #86efac;
+    border: 1px solid rgba($color-shared, 0.3);
+  }
+
+  strong { font-size: 1rem; }
+}
+
+.panel-desc {
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  line-height: 1.6;
+  padding: 0.5rem 0.6rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+}
+
+// ── Subscriber List ──
+.subscriber-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-height: 80px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.subscriber-entry {
+  padding: 0.6rem;
+  border-radius: 6px;
+  animation: fadeIn 0.3s ease;
+
+  &--waiting {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+  }
+
+  &--received {
+    background: rgba($color-shared, 0.06);
+    border: 1px solid rgba($color-shared, 0.15);
+  }
+
+  &--cached {
+    background: rgba($color-cached, 0.08);
+    border: 1px solid rgba($color-cached, 0.2);
+  }
+}
+
+.subscriber-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
+
+.subscriber-label {
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: #e2e8f0;
+}
+
+.badge {
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+
+  &--waiting  { background: rgba(255, 255, 255, 0.1); color: $text-muted; }
+  &--received { background: rgba($color-shared, 0.2); color: #86efac; }
+  &--cached   { background: rgba($color-cached, 0.2); color: #c4b5fd; }
+}
+
+.subscriber-data {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem;
+  color: #e2e8f0;
+  padding: 0.3rem 0;
+}
+
+.subscriber-note {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding-top: 0.2rem;
+
+  &--bad  { color: #fca5a5; }
+  &--good { color: #86efac; }
+}
+
+// ── Progressive Disclosure ──
+.how-it-works {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  summary {
+    font-size: 0.78rem;
+    color: $text-muted;
+    cursor: pointer;
+    user-select: none;
+    padding: 0.3rem 0;
+
+    &:hover { color: #e2e8f0; }
+  }
+
+  p {
+    margin: 0.5rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: #e2e8f0;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+
+    code {
+      background: rgba(#90cdf4, 0.2);
+      color: #93c5fd;
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.72rem;
+      border: 1px solid rgba(#90cdf4, 0.15);
+    }
+
+    strong { color: #fff; }
+  }
+}
+
+// ── Empty State ──
+.empty-state {
+  color: $text-muted;
+  font-style: italic;
+  font-size: 0.78rem;
+  text-align: center;
+  padding: 0.75rem 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+// ── Activity Log ──
+.log-section {
+  background: $bg-card;
+  border: 1px solid $border;
+  border-radius: $radius;
+  padding: 1rem;
+
+  h3 {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    color: #f1f5f9;
+  }
+}
+
+.log-list {
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.log-entry {
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba($border, 0.5);
+  font-size: 0.75rem;
+  font-family: 'Fira Code', monospace;
+  animation: fadeIn 0.2s ease;
+
+  &:last-child { border-bottom: none; }
+
+  &--fetch   { color: #fca5a5; }
+  &--receive { color: #86efac; }
+  &--cache   { color: #c4b5fd; }
+  &--info    { color: $text-muted; }
+}
+
+.log-panel { margin-right: 0.5rem; }
+
+// ── Animation ──
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

@@ -83,4 +83,11 @@ export const routes: Routes = [
         (m) => m.SubjectDemoComponent,
       ),
   },
+  {
+    path: 'share-demo',
+    loadComponent: () =>
+      import('./features/share-demo/share-demo.component').then(
+        (m) => m.ShareDemoComponent,
+      ),
+  },
 ];
