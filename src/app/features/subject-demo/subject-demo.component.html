@@ -1,0 +1,145 @@
+<!-- subject-demo.component.html -->
+
+<div class="demo-wrapper">
+  <h1>📡 Subjects — Side by Side</h1>
+
+  <!-- ① One-sentence explanation -->
+  <div class="explanation-banner">
+    <p>
+      All three Subjects receive the <strong>same values</strong>.
+      The difference? What a <strong>late subscriber</strong> sees when it joins mid-stream.
+    </p>
+  </div>
+
+  <!-- ② Controls -->
+  <section class="controls">
+    <button class="btn emit" (click)="onEmit()">
+      📡 Emit Value
+    </button>
+    <button
+      class="btn late"
+      (click)="onAddLateSubscriber()"
+      [disabled]="panels[0].hasLateSubscriber"
+    >
+      🕐 Add Late Subscriber
+    </button>
+    <button class="btn reset" (click)="onReset()">
+      🔄 Reset All
+    </button>
+    <p class="hint">
+      💡 Emit 3-4 values first, THEN add a late subscriber to see the difference
+    </p>
+  </section>
+
+  <!-- ③ Three Panels -->
+  <div class="panels">
+
+    @for (panel of panels; track panel.name) {
+      <div class="panel">
+        <div class="panel-header">
+          <h3>{{ panel.icon }} {{ panel.name }}</h3>
+        </div>
+
+        <p class="panel-desc">{{ panel.description }}</p>
+
+        <!-- Early Subscriber -->
+        <div class="subscriber-section">
+          <h4 class="subscriber-label subscriber-label--early">
+            👂 Early Subscriber
+            <span class="count-badge">{{ panel.earlyCount }}</span>
+          </h4>
+          <div class="entry-list">
+            @if (panel.earlyEntries.length === 0) {
+              <p class="empty-state">No values yet</p>
+            } @else {
+              @for (entry of panel.earlyEntries; track entry.id) {
+                <div class="entry entry--early">
+                  <span class="entry-value">"{{ entry.value }}"</span>
+                  <span class="entry-time">
+                    {{ entry.timestamp | date:'HH:mm:ss.SSS' }}
+                  </span>
+                </div>
+              }
+            }
+          </div>
+        </div>
+
+        <!-- Late Subscriber -->
+        <div class="subscriber-section">
+          <h4 class="subscriber-label subscriber-label--late">
+            🕐 Late Subscriber
+            @if (panel.hasLateSubscriber) {
+              <span class="count-badge count-badge--late">{{ panel.lateCount }}</span>
+            }
+          </h4>
+          <div class="entry-list">
+            @if (!panel.hasLateSubscriber) {
+              <p class="empty-state">Not subscribed yet — click "Add Late Subscriber"</p>
+            } @else if (panel.lateEntries.length === 0) {
+              <p class="empty-state empty-state--missed">
+                😶 Got nothing — missed all previous values
+              </p>
+            } @else {
+              @for (entry of panel.lateEntries; track entry.id) {
+                <div class="entry entry--late">
+                  <span class="entry-value">"{{ entry.value }}"</span>
+                  <span class="entry-time">
+                    {{ entry.timestamp | date:'HH:mm:ss.SSS' }}
+                  </span>
+                </div>
+              }
+            }
+          </div>
+        </div>
+
+        <!-- Progressive Disclosure -->
+        <details class="how-it-works">
+          <summary>How does this work?</summary>
+          @if (panel.name === 'Subject') {
+            <p>
+              A plain <code>Subject</code> has no memory.
+              When a value is emitted, only <strong>current subscribers</strong>
+              receive it. Late subscribers start with an empty slate — they
+              only see values emitted <strong>after</strong> they subscribe.
+            </p>
+          } @else if (panel.name === 'BehaviorSubject') {
+            <p>
+              <code>BehaviorSubject</code> always holds the <strong>most recent
+              value</strong>. It requires an initial value at creation time.
+              When a new subscriber joins, it immediately receives the current
+              value — then all future emissions. This is the backbone of
+              <strong>Angular service-based state management</strong>.
+            </p>
+          } @else {
+            <p>
+              <code>ReplaySubject(n)</code> buffers the last <strong>n values</strong>.
+              When a new subscriber joins, those buffered values are immediately
+              replayed — then all future emissions follow. Unlike
+              <code>BehaviorSubject</code>, it doesn't require an initial value
+              and can replay <strong>more than one</strong> past value.
+            </p>
+          }
+        </details>
+      </div>
+    }
+
+  </div>
+
+  <!-- ④ Activity Log -->
+  <div class="log-section">
+    <h3>📋 Activity Log</h3>
+    @if (log.length === 0) {
+      <p class="empty-state">Click "Emit Value" to start.</p>
+    } @else {
+      <ul class="log-list">
+        @for (entry of log; track entry.id) {
+          <li [class]="'log-entry log-entry--' + entry.type">
+            <span class="log-panel">{{ entry.panel }}</span>
+            {{ entry.message }}
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+</div>

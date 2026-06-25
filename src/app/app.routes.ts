@@ -76,4 +76,11 @@ export const routes: Routes = [
         (m) => m.ErrorDemoComponent,
       ),
   },
+  {
+    path: 'subject-demo',
+    loadComponent: () =>
+      import('./features/subject-demo/subject-demo.component').then(
+        (m) => m.SubjectDemoComponent,
+      ),
+  },
 ];

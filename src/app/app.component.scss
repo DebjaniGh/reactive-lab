@@ -3,7 +3,7 @@
 }
 
 .app-sidenav {
-  width: 260px;
+  width: 300px;
   background: #1e1e2f;
   color: #ffffff;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
@@ -37,9 +37,22 @@ mat-nav-list {
     color: rgba(255, 255, 255, 0.7);
     margin: 4px 8px;
     border-radius: 8px;
+    overflow: hidden;
     transition:
       background 0.2s,
       color 0.2s;
+
+    span[matListItemTitle] {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &:hover span[matListItemTitle] {
+      overflow: visible;
+      white-space: normal;
+      word-break: break-word;
+    }
 
     &:hover {
       background: rgba(124, 77, 255, 0.1);

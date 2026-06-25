@@ -61,5 +61,10 @@ export class AppComponent {
       label: 'Error Handling Demo',
       icon: 'error',
     },
+    {
+      path: 'subject-demo',
+      label: 'Subject Demo',
+      icon: 'subject',
+    },
   ];
 }
