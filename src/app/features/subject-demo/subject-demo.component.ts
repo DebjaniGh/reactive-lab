@@ -48,6 +48,11 @@ export class SubjectDemoComponent implements OnDestroy {
   private behavior$ = new BehaviorSubject<string>('initial');
   private replay$ = new ReplaySubject<string>(2); // buffer last 2 values
 
+  // ── Ordered references to pair with panels by index ──
+  private get subjects(): Subject<string>[] {
+    return [this.subject$, this.behavior$, this.replay$];
+  }
+
   // ── Subscriptions ──
   private subs = new Subscription();
   private lateSubs = new Subscription();
@@ -97,44 +102,33 @@ export class SubjectDemoComponent implements OnDestroy {
     this.setupEarlySubscribers();
   }
 
+  // ── Reusable subscriber factory ──
+  private subscribeTo(
+    source$: Subject<string>,
+    panel: PanelState,
+    isLate: boolean,
+    logOnReceive = false
+  ): Subscription {
+    return source$.subscribe((value) => {
+      const entries = isLate ? panel.lateEntries : panel.earlyEntries;
+      const count = isLate ? ++panel.lateCount : ++panel.earlyCount;
+      entries.unshift({
+        id: count,
+        value,
+        timestamp: new Date(),
+        isLate,
+      });
+      if (logOnReceive) {
+        this.addLog(panel.icon, `${panel.name} late subscriber received: "${value}"`, 'receive');
+      }
+    });
+  }
+
   // ── Early subscribers — subscribed from the start ──
   private setupEarlySubscribers(): void {
-    // Subject — early subscriber
-    const sub1 = this.subject$.subscribe((value) => {
-      this.panels[0].earlyCount++;
-      this.panels[0].earlyEntries.unshift({
-        id: this.panels[0].earlyCount,
-        value,
-        timestamp: new Date(),
-        isLate: false,
-      });
+    this.subjects.forEach((source$, i) => {
+      this.subs.add(this.subscribeTo(source$, this.panels[i], false));
     });
-
-    // BehaviorSubject — early subscriber
-    const sub2 = this.behavior$.subscribe((value) => {
-      this.panels[1].earlyCount++;
-      this.panels[1].earlyEntries.unshift({
-        id: this.panels[1].earlyCount,
-        value,
-        timestamp: new Date(),
-        isLate: false,
-      });
-    });
-
-    // ReplaySubject — early subscriber
-    const sub3 = this.replay$.subscribe((value) => {
-      this.panels[2].earlyCount++;
-      this.panels[2].earlyEntries.unshift({
-        id: this.panels[2].earlyCount,
-        value,
-        timestamp: new Date(),
-        isLate: false,
-      });
-    });
-
-    this.subs.add(sub1);
-    this.subs.add(sub2);
-    this.subs.add(sub3);
 
     this.addLog('📺', 'BehaviorSubject early subscriber received initial value: "initial"', 'receive');
   }
@@ -146,9 +140,7 @@ export class SubjectDemoComponent implements OnDestroy {
 
     this.addLog('📡', `Emitted "${value}" to all three Subjects`, 'emit');
 
-    this.subject$.next(value);
-    this.behavior$.next(value);
-    this.replay$.next(value);
+    this.subjects.forEach((source$) => source$.next(value));
   }
 
   // ── Add late subscribers to ALL three ──
@@ -161,49 +153,18 @@ export class SubjectDemoComponent implements OnDestroy {
 
     this.addLog('🕐', 'Adding late subscribers to all three Subjects...', 'subscribe');
 
-    // Subject — late subscriber
+    // Subject — late subscriber gets NOTHING
     this.panels[0].hasLateSubscriber = true;
-    const late1 = this.subject$.subscribe((value) => {
-      this.panels[0].lateCount++;
-      this.panels[0].lateEntries.unshift({
-        id: this.panels[0].lateCount,
-        value,
-        timestamp: new Date(),
-        isLate: true,
-      });
-      this.addLog('📢', `Subject late subscriber received: "${value}"`, 'receive');
-    });
+    this.lateSubs.add(this.subscribeTo(this.subject$, this.panels[0], true, true));
     this.addLog('📢', 'Subject: late subscriber got NOTHING — missed all previous values', 'info');
 
-    // BehaviorSubject — late subscriber
+    // BehaviorSubject — late subscriber gets the most recent value
     this.panels[1].hasLateSubscriber = true;
-    const late2 = this.behavior$.subscribe((value) => {
-      this.panels[1].lateCount++;
-      this.panels[1].lateEntries.unshift({
-        id: this.panels[1].lateCount,
-        value,
-        timestamp: new Date(),
-        isLate: true,
-      });
-      this.addLog('📺', `BehaviorSubject late subscriber received: "${value}"`, 'receive');
-    });
+    this.lateSubs.add(this.subscribeTo(this.behavior$, this.panels[1], true, true));
 
-    // ReplaySubject — late subscriber
+    // ReplaySubject — late subscriber gets the last 2 buffered values
     this.panels[2].hasLateSubscriber = true;
-    const late3 = this.replay$.subscribe((value) => {
-      this.panels[2].lateCount++;
-      this.panels[2].lateEntries.unshift({
-        id: this.panels[2].lateCount,
-        value,
-        timestamp: new Date(),
-        isLate: true,
-      });
-      this.addLog('📹', `ReplaySubject late subscriber received: "${value}"`, 'receive');
-    });
-
-    this.lateSubs.add(late1);
-    this.lateSubs.add(late2);
-    this.lateSubs.add(late3);
+    this.lateSubs.add(this.subscribeTo(this.replay$, this.panels[2], true, true));
   }
 
   onReset(): void {
