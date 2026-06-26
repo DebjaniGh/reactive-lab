@@ -1,0 +1,169 @@
+<!-- signal-demo.component.html -->
+
+<div class="demo-wrapper">
+  <h1>⚡ Signals vs BehaviorSubject</h1>
+
+  <!-- ② Two Panels -->
+  <div class="panels">
+
+    <!-- Panel 1: BehaviorSubject -->
+    <div class="panel panel--bs">
+      <div class="panel-header">
+        <h3>📡 BehaviorSubject</h3>
+        <span class="panel-tag panel-tag--bs">Push-based</span>
+      </div>
+
+      <!-- Values -->
+      <div class="value-grid">
+        <div class="value-card">
+          <span class="value-label">Count</span>
+          <span class="value-number">{{ count$ | async }}</span>
+        </div>
+        <div class="value-card">
+          <span class="value-label">Doubled</span>
+          <span class="value-number">{{ doubled$ | async }}</span>
+        </div>
+        <div class="value-card">
+          <span class="value-label">Even?</span>
+          <span class="value-number">{{ (isEven$ | async) ? '✅' : '❌' }}</span>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <button class="btn btn--bs" (click)="bsDecrement()">-1</button>
+        <button class="btn btn--bs" (click)="bsIncrement()">+1</button>
+        <button class="btn btn--reset" (click)="bsReset()">Reset</button>
+      </div>
+
+      <!-- Subscription Info -->
+      <div class="sub-info sub-info--bs">
+        <h4>Subscription Management</h4>
+        <div class="sub-count">
+          Subscriptions: <strong>{{ bsSubscriptionCount }}</strong>
+        </div>
+        <ul class="sub-list">
+          @for (sub of bsActiveSubscriptions; track sub) {
+            <li>📌 {{ sub }}</li>
+          }
+        </ul>
+        <p class="sub-warning">
+          ⚠️ Each <code>| async</code> creates a subscription.
+          Forgetting cleanup creates zombie subscriptions.
+        </p>
+      </div>
+
+      <!-- How it works -->
+      <details class="how-it-works">
+        <summary>How does this work?</summary>
+        <p>
+          <code>BehaviorSubject</code> is <strong>push-based</strong>.
+          You call <code>.next(value)</code> to push new values to all
+          subscribers. The template uses <code>| async</code> to subscribe
+          and auto-unsubscribe. Derived state uses <code>.pipe(map())</code>.
+          Each pipe in the template creates a separate subscription that
+          Angular manages through the async pipe.
+        </p>
+      </details>
+
+      <!-- Activity Log -->
+      <div class="log-section">
+        <div class="log-header">
+          <h4>📋 Activity Log</h4>
+          <button class="btn btn--clear" (click)="clearBsLog()">🗑️ Clear</button>
+        </div>
+        @if (bsLog.length === 0) {
+          <p class="empty-state">Click the buttons above to see updates.</p>
+        } @else {
+          <ul class="log-list">
+            @for (entry of bsLog; track entry.id) {
+              <li [class]="'log-entry log-entry--' + entry.type">
+                {{ entry.message }}
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </div>
+
+    <!-- Panel 2: Signal -->
+    <div class="panel panel--sig">
+      <div class="panel-header">
+        <h3>⚡ Signal</h3>
+        <span class="panel-tag panel-tag--sig">Pull-based</span>
+      </div>
+
+      <!-- Values -->
+      <div class="value-grid">
+        <div class="value-card">
+          <span class="value-label">Count</span>
+          <span class="value-number">{{ signalCount() }}</span>
+        </div>
+        <div class="value-card">
+          <span class="value-label">Doubled</span>
+          <span class="value-number">{{ signalDoubled() }}</span>
+        </div>
+        <div class="value-card">
+          <span class="value-label">Even?</span>
+          <span class="value-number">{{ signalIsEven() ? '✅' : '❌' }}</span>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <button class="btn btn--sig" (click)="sigDecrement()">-1</button>
+        <button class="btn btn--sig" (click)="sigIncrement()">+1</button>
+        <button class="btn btn--reset" (click)="sigReset()">Reset</button>
+      </div>
+
+      <!-- Subscription Info -->
+      <div class="sub-info sub-info--sig">
+        <h4>Subscription Management</h4>
+        <div class="sub-count">
+          Subscriptions: <strong>0</strong> ⚡
+        </div>
+        <p class="sub-note">
+          No <code>| async</code>. No <code>.subscribe()</code>.
+          No cleanup needed. Angular reads signals directly.
+        </p>
+        <p class="sub-safe">
+          ✅ Zero chance of zombie subscriptions.
+        </p>
+      </div>
+
+      <!-- How it works -->
+      <details class="how-it-works">
+        <summary>How does this work?</summary>
+        <p>
+          <code>Signal</code> is <strong>pull-based</strong>.
+          You read it by calling <code>count()</code> — like calling a function.
+          Angular tracks which templates depend on which signals.
+          When a signal changes, Angular updates <strong>only the affected views</strong>.
+          Derived state uses <code>computed()</code> — no <code>pipe()</code>,
+          no <code>map()</code>, no subscriptions.
+        </p>
+      </details>
+
+      <!-- Activity Log -->
+      <div class="log-section">
+        <div class="log-header">
+          <h4>📋 Activity Log</h4>
+          <button class="btn btn--clear" (click)="clearSigLog()">🗑️ Clear</button>
+        </div>
+        @if (sigLog.length === 0) {
+          <p class="empty-state">Click the buttons above to see updates.</p>
+        } @else {
+          <ul class="log-list">
+            @for (entry of sigLog; track entry.id) {
+              <li [class]="'log-entry log-entry--' + entry.type">
+                {{ entry.message }}
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </div>
+
+  </div>
+
+</div>

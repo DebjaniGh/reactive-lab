@@ -70,6 +70,11 @@ export class AppComponent {
       path: 'share-demo',
       label: 'Share Replay Demo',
       icon: 'share',
-    }
+    },
+    {
+      path: 'signals-demo',
+      label: 'Signals Demo',
+      icon: 'signal_cellular_alt',
+    },
   ];
 }

@@ -1,0 +1,419 @@
+// signal-demo.component.scss
+
+$color-bs: #3b82f6;
+$color-sig: #f59e0b;
+$color-success: #22c55e;
+$color-warning: #ef4444;
+$bg-dark: #0f172a;
+$bg-card: #1e293b;
+$text-primary: #f1f5f9;
+$text-muted: #94a3b8;
+$border: #334155;
+$radius: 10px;
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.demo-wrapper {
+  min-height: 100vh;
+  background: $bg-dark;
+  color: $text-primary;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
+
+  h1 {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+}
+
+// ── Explanation ──
+.explanation-banner {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: #1a1a2e;
+  border: 1px solid #2d2d44;
+  border-radius: $radius;
+  border-left: 3px solid $color-sig;
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #f1f5f9;
+
+    code {
+      background: #2d3748;
+      color: #90cdf4;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    strong { color: #fff; }
+  }
+}
+
+// ── Panels ──
+.panels {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  background: #253347;
+  border: 1px solid #3d5068;
+  border-radius: $radius;
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+
+  &--bs  { border-top: 3px solid $color-bs; }
+  &--sig { border-top: 3px solid $color-sig; }
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #fff;
+  }
+}
+
+.panel-tag {
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+
+  &--bs  { background: rgba($color-bs, 0.2);  color: #60a5fa; }
+  &--sig { background: rgba($color-sig, 0.2); color: #fbbf24; }
+}
+
+.panel-desc {
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  line-height: 1.6;
+  padding: 0.4rem 0.6rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+
+  code {
+    background: rgba(#90cdf4, 0.15);
+    color: #93c5fd;
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+  }
+}
+
+// ── Value Grid ──
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.value-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 0.6rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.value-label {
+  font-size: 0.7rem;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.value-number {
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-family: 'Fira Code', monospace;
+  color: #fff;
+}
+
+// ── Controls ──
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+
+  &:hover { opacity: 0.85; }
+  &:active { transform: scale(0.95); }
+
+  &--bs    { background: rgba($color-bs, 0.2);  color: #60a5fa; border: 1px solid rgba($color-bs, 0.3); }
+  &--sig   { background: rgba($color-sig, 0.2); color: #fbbf24; border: 1px solid rgba($color-sig, 0.3); }
+  &--reset { background: rgba(255, 255, 255, 0.1); color: $text-muted; }
+  &--clear { background: #475569; color: #fff; font-size: 0.75rem; padding: 0.3rem 0.7rem; }
+}
+
+// ── Subscription Info ──
+.sub-info {
+  padding: 0.7rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  h4 {
+    margin: 0 0 0.4rem;
+    font-size: 0.8rem;
+    color: $text-muted;
+  }
+
+  &--bs { border-left: 3px solid $color-bs; }
+  &--sig { border-left: 3px solid $color-sig; }
+}
+
+.sub-count {
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  margin-bottom: 0.4rem;
+
+  strong {
+    font-size: 1rem;
+    color: #fff;
+  }
+}
+
+.sub-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.4rem;
+
+  li {
+    font-size: 0.75rem;
+    color: #e2e8f0;
+    padding: 0.15rem 0;
+    font-family: 'Fira Code', monospace;
+  }
+}
+
+.sub-warning {
+  font-size: 0.72rem;
+  color: #fca5a5;
+  margin: 0;
+  line-height: 1.5;
+
+  code {
+    background: rgba(#90cdf4, 0.15);
+    color: #93c5fd;
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    font-size: 0.7rem;
+  }
+}
+
+.sub-note {
+  font-size: 0.75rem;
+  color: #e2e8f0;
+  margin: 0 0 0.3rem;
+  line-height: 1.5;
+
+  code {
+    background: rgba(#90cdf4, 0.15);
+    color: #93c5fd;
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    font-size: 0.7rem;
+  }
+}
+
+.sub-safe {
+  font-size: 0.75rem;
+  color: #86efac;
+  font-weight: 600;
+  margin: 0;
+}
+
+// ── Code Comparison ──
+.code-comparison {
+  margin-bottom: 1.5rem;
+
+  h3 {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+  }
+}
+
+.code-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.code-block {
+  background: #0f172a;
+  border: 1px solid $border;
+  border-radius: $radius;
+  overflow: hidden;
+
+  &--bs  { border-top: 3px solid $color-bs; }
+  &--sig { border-top: 3px solid $color-sig; }
+
+  h4 {
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.82rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid $border;
+  }
+
+  pre {
+    margin: 0;
+    padding: 0.75rem;
+    overflow-x: auto;
+  }
+
+  code {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.72rem;
+    line-height: 1.6;
+    color: #e2e8f0;
+  }
+}
+
+// ── Progressive Disclosure ──
+.how-it-works {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  summary {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #93c5fd;
+    cursor: pointer;
+    user-select: none;
+    padding: 0.4rem 0.5rem;
+    border-radius: 4px;
+    transition: background 0.15s, color 0.15s;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    &::before {
+      content: '▶';
+      font-size: 0.6rem;
+      transition: transform 0.2s;
+    }
+
+    &:hover {
+      color: #bfdbfe;
+      background: rgba(147, 197, 253, 0.08);
+    }
+  }
+
+  &[open] summary::before {
+    transform: rotate(90deg);
+  }
+
+  p {
+    margin: 0.5rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: #e2e8f0;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+
+    code {
+      background: rgba(#90cdf4, 0.2);
+      color: #93c5fd;
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.72rem;
+      border: 1px solid rgba(#90cdf4, 0.15);
+    }
+
+    strong { color: #fff; }
+  }
+}
+
+// ── Activity Log ──
+.log-section {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+
+  h4 { margin: 0; font-size: 0.85rem; color: $text-muted; }
+}
+
+.log-list {
+  list-style: none;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.log-entry {
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba($border, 0.5);
+  font-size: 0.75rem;
+  font-family: 'Fira Code', monospace;
+  animation: fadeIn 0.2s ease;
+
+  &:last-child { border-bottom: none; }
+
+  &--update  { color: #93c5fd; }
+  &--derive  { color: #86efac; }
+  &--cleanup { color: #fca5a5; }
+  &--info    { color: $text-muted; }
+}
+
+.log-panel { margin-right: 0.5rem; }
+
+.empty-state {
+  color: $text-muted;
+  font-style: italic;
+  font-size: 0.78rem;
+  text-align: center;
+  padding: 0.75rem;
+}
+
+// ── Animation ──
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

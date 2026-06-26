@@ -90,4 +90,10 @@ export const routes: Routes = [
         (m) => m.ShareDemoComponent,
       ),
   },
+  {
+    path: 'signals-demo',
+    loadComponent: () => import('./features/signals-demo/signals-demo.component').then(
+      (m) => m.SignalDemoComponent,
+    ),
+  },
 ];
